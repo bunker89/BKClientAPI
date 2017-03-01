@@ -6,37 +6,49 @@ import java.util.List;
 import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.clientapi.HandleChain.OnResultListener;
 
+/**
+ * @author bunker89
+ *
+ */
 public class Chainer implements OnResultListener {
 	private List<HandleChain> mChains = new LinkedList<>();
 	private Network mNetwork;
-	private boolean mIsAlive = false;
-	private final Object resultMutex = new Object();
+	private boolean mConnectionOriented = false;
+	private boolean mDummyHandling = false;
 	private HandleChain dummy = new HandleChain() {
 
 		@Override
-		public void receive(PeerConnection b, byte[] data) {
+		public void receive(PeerConnection b, byte[] data, int seq) {
 		}
 
 		@Override
 		public void chainning(PeerConnection b, int seq) {
+			System.out.println("Chainer:dummy:chainning");
+			mDummyHandling = true;
 		}
 	};
 
 	public Chainer() {
 	}
 
-	public Chainer(boolean alive) {
-		mIsAlive = alive;
+	public Chainer(boolean connectionOriented) {
+		mConnectionOriented = connectionOriented;
 	}
 
 	public void startNet(Network network) {
 		mNetwork = network;
+		if (mChains.isEmpty())
+			mChains.add(dummy);
 		setChain();
 		network.start();
 	}
 
 	public void addChain(HandleChain chain) {
 		mChains.add(chain);
+		if (mDummyHandling) {
+			mDummyHandling = false;
+			setNextChain();
+		}
 	}
 
 	@Override
@@ -45,7 +57,7 @@ public class Chainer implements OnResultListener {
 			setNextChain();
 
 		else {
-			synchronized (resultMutex) {
+			synchronized (mChains) {
 				for (HandleChain chain : mChains) {
 					chain.result(false);
 				}
@@ -65,7 +77,7 @@ public class Chainer implements OnResultListener {
 		if (mChains.size() > 0) {
 			HandleChain chain = setChain();
 			chain.chainning(mNetwork.getPeerConnection(), mNetwork.getNextSequence());
-		} else if (!mIsAlive) {
+		} else if (!mConnectionOriented) {
 			mNetwork.changeHandle(dummy);
 			mNetwork.getPeerConnection().closePeer();
 		}

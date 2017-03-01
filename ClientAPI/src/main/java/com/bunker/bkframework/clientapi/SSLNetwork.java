@@ -1,4 +1,5 @@
 package com.bunker.bkframework.clientapi;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.bunker.bkframework.business.Business;
@@ -6,7 +7,6 @@ import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.sec.SSLSecureFactory;
 
 /**
- * Connection Less
  * 
  * Copyright 2016~ by bunker Corp.,
  * All rights reserved.
@@ -22,6 +22,7 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 	private PeerConnection mConnector;
 	private Thread mThread;
 	private PeerNIOClient mClient;
+	private boolean mHandshaked = false;
 
 	public SSLNetwork(NetHandle handle, String url, int port) {
 		mHandle = handle;
@@ -39,7 +40,7 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 
 	@Override
 	public void receive(PeerConnection connector, byte[] data, int sequence) {
-		mHandle.receive(connector, data);
+		mHandle.receive(connector, data, sequence);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 
 	@Override
 	public void handshaked() {
-//		System.out.println("handshake");
+		mHandshaked = true;
 		mHandle.chainning(mConnector, mSeq++);
 	}
 
@@ -71,6 +72,13 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 
 	@Override
 	public PeerConnection getPeerConnection() {
+		if (!mHandshaked) {
+			try {
+				throw new IOException("ssl not handshaked");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return mConnector;
 	}
 }
