@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.sec.SSLSecureFactory;
+import com.bunker.bkframework.sec.SecureFactory;
 
 /**
  * 
@@ -29,8 +30,12 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 	}
 
 	public SSLNetwork(String keyPath, NetHandle handle, String url, int port) {
+		this(new SSLSecureFactory("client.keystore", "server", "client.keystore", "server", "client", 1), handle, url, port);
+	}
+
+	public SSLNetwork(SecureFactory<ByteBuffer> secFac, NetHandle handle, String url, int port) {
 		mHandle = handle;
-		mClient = new PeerNIOClient(new SSLSecureFactory("client.keystore", "server", "client.keystore", "server", "client", 1),
+		mClient = new PeerNIOClient(secFac,
 				this,
 				url,
 				port);
