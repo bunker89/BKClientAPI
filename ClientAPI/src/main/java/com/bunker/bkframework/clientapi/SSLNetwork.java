@@ -25,6 +25,10 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 	private boolean mHandshaked = false;
 
 	public SSLNetwork(NetHandle handle, String url, int port) {
+		this("client.keystore", handle, url, port);
+	}
+
+	public SSLNetwork(String keyPath, NetHandle handle, String url, int port) {
 		mHandle = handle;
 		mClient = new PeerNIOClient(new SSLSecureFactory("client.keystore", "server", "client.keystore", "server", "client", 1),
 				this,
