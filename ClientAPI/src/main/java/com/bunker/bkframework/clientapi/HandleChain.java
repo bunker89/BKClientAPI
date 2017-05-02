@@ -28,5 +28,5 @@ public abstract class HandleChain implements NetHandle {
 
 	public void setMainChain() {
 		isHanding = true;
-	}	
+	}
 }

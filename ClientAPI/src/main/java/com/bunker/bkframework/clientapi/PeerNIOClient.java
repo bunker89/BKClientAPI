@@ -35,6 +35,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 	private String mInetAddr;
 	private int mPort;
 	private HandShakeCallback mCallback;
+	private String mName;
 
 	public PeerNIOClient(Business<ByteBuffer> business, String inetAddr, int port) {
 		this(null, business, inetAddr, port);

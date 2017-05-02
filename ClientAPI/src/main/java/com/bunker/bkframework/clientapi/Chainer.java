@@ -43,7 +43,7 @@ public class Chainer implements OnResultListener {
 		network.start();
 	}
 
-	public void addChain(HandleChain chain) {
+	synchronized public void addChain(HandleChain chain) {
 		mChains.add(chain);
 		if (mDummyHandling) {
 			mDummyHandling = false;
@@ -76,10 +76,12 @@ public class Chainer implements OnResultListener {
 	private void setNextChain() {
 		if (mChains.size() > 0) {
 			HandleChain chain = setChain();
+			System.out.println(chain);
 			chain.chainning(mNetwork.getPeerConnection(), mNetwork.getNextSequence());
-		} else if (!mConnectionOriented) {
-			mNetwork.changeHandle(dummy);
-			mNetwork.getPeerConnection().closePeer();
+		} else if (mConnectionOriented) {
+			dummy.chainning(mNetwork.getPeerConnection(), mNetwork.getNextSequence());
+		} else {
+			mNetwork.getPeerConnection().closePeer();			
 		}
 	}
 }

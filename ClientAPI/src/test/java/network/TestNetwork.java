@@ -10,7 +10,8 @@ public class TestNetwork implements Network {
 	@Override
 	public void start() {
 		System.out.println("TestNetwork:start");
-		mHandle.chainning(mConnection, 1);
+		if (mHandle != null)
+			mHandle.chainning(mConnection, 1);
 	}
 
 	@Override
