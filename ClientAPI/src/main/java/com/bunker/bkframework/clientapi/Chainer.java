@@ -23,7 +23,6 @@ public class Chainer implements OnResultListener {
 
 		@Override
 		public void chainning(PeerConnection b, int seq) {
-			System.out.println("Chainer:dummy:chainning");
 			mDummyHandling = true;
 		}
 	};
@@ -76,7 +75,6 @@ public class Chainer implements OnResultListener {
 	private void setNextChain() {
 		if (mChains.size() > 0) {
 			HandleChain chain = setChain();
-			System.out.println(chain);
 			chain.chainning(mNetwork.getPeerConnection(), mNetwork.getNextSequence());
 		} else if (mConnectionOriented) {
 			dummy.chainning(mNetwork.getPeerConnection(), mNetwork.getNextSequence());
