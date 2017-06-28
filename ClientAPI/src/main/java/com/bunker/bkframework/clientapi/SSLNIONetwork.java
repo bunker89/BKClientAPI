@@ -17,7 +17,7 @@ import com.bunker.bkframework.sec.SecureFactory;
  *
  *
  */
-public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Network {
+public class SSLNIONetwork implements Business<ByteBuffer>, HandShakeCallback, Network {
 	private NetHandle mHandle;
 	private int mSeq = 1000;
 	private PeerConnection mConnector;
@@ -25,15 +25,15 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 	private PeerNIOClient mClient;
 	private boolean mHandshaked = false;
 
-	public SSLNetwork(NetHandle handle, String url, int port) {
+	public SSLNIONetwork(NetHandle handle, String url, int port) {
 		this("client.keystore", handle, url, port);
 	}
 
-	public SSLNetwork(String keyPath, NetHandle handle, String url, int port) {
+	public SSLNIONetwork(String keyPath, NetHandle handle, String url, int port) {
 		this(new SSLSecureFactory("client.keystore", "server", "client.keystore", "server", "client", 1), handle, url, port);
 	}
 
-	public SSLNetwork(SecureFactory<ByteBuffer> secFac, NetHandle handle, String url, int port) {
+	public SSLNIONetwork(SecureFactory<ByteBuffer> secFac, NetHandle handle, String url, int port) {
 		mHandle = handle;
 		mClient = new PeerNIOClient(secFac,
 				this,
@@ -60,7 +60,7 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 	@Override
 	public void handshaked() {
 		mHandshaked = true;
-		mHandle.chainning(mConnector, mSeq++);
+		mHandle.chainning(mConnector, getNextSequence());
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 	}
 
 	@Override
-	public int getNextSequence() {
+	synchronized public int getNextSequence() {
 		return mSeq++;
 	}
 
@@ -89,5 +89,9 @@ public class SSLNetwork implements Business<ByteBuffer>, HandShakeCallback, Netw
 			}
 		}
 		return mConnector;
+	}
+	
+	public void setWriteBufferSizeKB(int size) {
+		mClient.setWriterBufferSize(size);
 	}
 }

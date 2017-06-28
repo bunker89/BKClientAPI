@@ -35,7 +35,8 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 	private String mInetAddr;
 	private int mPort;
 	private HandShakeCallback mCallback;
-	private String mName;
+	private String mName = "Unknown";
+	private int mSize;
 
 	public PeerNIOClient(Business<ByteBuffer> business, String inetAddr, int port) {
 		this(null, business, inetAddr, port);
@@ -69,7 +70,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 			ByteBuffer b = getReadBuffer();
 			try {
 				int readSize =  0;
-				while (readSize != Constants.PACKET_TOTAL_SIZE) {
+				while (readSize != Constants.PACKET_DEFAULT_TOTAL_SIZE) {
 					int current = channel.read(b);
 					readSize += current;
 					if (current < 0) {
@@ -80,9 +81,9 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 				b.flip();
 				dispatch(b);
 			} catch (AsynchronousCloseException e) {
-				Logger.logging("PeerNIOClient", "peer async closed");
+				Logger.logging("PeerNIOClient", "peer async closed:" + mName);
 			} catch (IOException e) {
-				e.printStackTrace();
+				Logger.logging("PeerNIOClient", "connection closed:" + mName);
 				return;
 			}
 			life.life();
@@ -96,6 +97,9 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 			channel = SocketChannel.open(hostAddress);
 			channel.configureBlocking(true);
 			Writer<ByteBuffer> writer = new NIOWriter(channel, null);
+			if (mSize > 0)
+				writer.setWriteBufferSize(mSize);
+			System.out.println(mSize + "," + channel.socket().getSendBufferSize());
 			setWriter(writer);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,6 +109,10 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 		return true;
 	}
 
+	public void setName(String name) {
+		mName = name;
+	}
+
 	@Override
 	public Peer<ByteBuffer> getPeer() {
 		return this;
@@ -112,7 +120,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 
 	@Override
 	public final ByteBuffer getReadBuffer() {
-		ByteBuffer b = ByteBuffer.allocate(Constants.PACKET_TOTAL_SIZE);
+		ByteBuffer b = ByteBuffer.allocate(Constants.PACKET_DEFAULT_TOTAL_SIZE);
 		return b;
 	}
 
@@ -121,7 +129,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 	 */
 	@Override
 	public void destroy() {
-		
+
 	}
 
 	@Override
@@ -129,5 +137,9 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 		super.handShaked();
 		if (mCallback != null)
 			mCallback.handshaked();
+	}
+
+	public void setWriterBufferSize(int sizeKB) {
+		mSize = sizeKB;
 	}
 }
