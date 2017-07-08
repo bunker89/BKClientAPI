@@ -23,6 +23,8 @@ public class ReactiveChainer implements OnResultListener, NetHandle {
 		}
 	};
 
+	private HandleChain mCurrentChain = dummy;
+
 	public ReactiveChainer() {
 	}
 
@@ -81,19 +83,13 @@ public class ReactiveChainer implements OnResultListener, NetHandle {
 
 	@Override
 	public void receive(PeerConnection b, byte[] data, int seq) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void chainning(PeerConnection b, int seq) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void broken() {
-		// TODO Auto-generated method stub
-		
 	}
 }
