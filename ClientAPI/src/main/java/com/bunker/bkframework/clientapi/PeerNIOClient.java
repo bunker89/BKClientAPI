@@ -99,7 +99,6 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 			Writer<ByteBuffer> writer = new NIOWriter(channel, null);
 			if (mSize > 0)
 				writer.setWriteBufferSize(mSize);
-			System.out.println(mSize + "," + channel.socket().getSendBufferSize());
 			setWriter(writer);
 		} catch (Exception e) {
 			e.printStackTrace();

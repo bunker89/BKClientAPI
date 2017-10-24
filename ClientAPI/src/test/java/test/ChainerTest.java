@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.clientapi.Chainer;
-import com.bunker.bkframework.clientapi.HandleChain;
+import com.bunker.bkframework.clientapi.NetLink;
 
 import network.TestNetwork;
 
@@ -19,7 +19,7 @@ public class ChainerTest {
 
 	@Test
 	public void test() {
-		chainer.addChain(new HandleChain() {
+		chainer.addChain(new NetLink() {
 			@Override
 			public void receive(PeerConnection b, byte[] data, int seq) {
 			}
@@ -31,7 +31,7 @@ public class ChainerTest {
 			}
 		});
 
-		chainer.addChain(new HandleChain() {
+		chainer.addChain(new NetLink() {
 			@Override
 			public void receive(PeerConnection b, byte[] data, int seq) {
 			}
@@ -45,7 +45,7 @@ public class ChainerTest {
 
 		System.out.println("start");
 		chainer.startNet(new TestNetwork());
-		chainer.addChain(new HandleChain() {
+		chainer.addChain(new NetLink() {
 			@Override
 			public void receive(PeerConnection b, byte[] data, int seq) {
 			}

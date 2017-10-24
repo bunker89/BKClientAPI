@@ -1,6 +1,6 @@
 package com.bunker.bkframework.clientapi;
 
-public abstract class HandleChain implements NetHandle {
+public abstract class NetLink implements NetHandle {
 	public interface OnResultListener {
 		public void result(boolean result);
 	}

@@ -4,14 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.bunker.bkframework.business.PeerConnection;
-import com.bunker.bkframework.clientapi.HandleChain.OnResultListener;
+import com.bunker.bkframework.clientapi.NetLink.OnResultListener;
 
 public class ReactiveChainer implements OnResultListener, NetHandle {
-	private List<HandleChain> mChains = new LinkedList<>();
+	private List<NetLink> mChains = new LinkedList<>();
 	private Network mNetwork;
 	private boolean mConnectionOriented = false;
 	private boolean mDummyHandling = false;
-	private HandleChain dummy = new HandleChain() {
+	private NetLink dummy = new NetLink() {
 
 		@Override
 		public void receive(PeerConnection b, byte[] data, int seq) {
@@ -23,7 +23,7 @@ public class ReactiveChainer implements OnResultListener, NetHandle {
 		}
 	};
 
-	private HandleChain mCurrentChain = dummy;
+	private NetLink mCurrentChain = dummy;
 
 	public ReactiveChainer() {
 	}
@@ -40,7 +40,7 @@ public class ReactiveChainer implements OnResultListener, NetHandle {
 		network.start();
 	}
 
-	synchronized public void addChain(HandleChain chain) {
+	synchronized public void addChain(NetLink chain) {
 		mChains.add(chain);
 		if (mDummyHandling) {
 			mDummyHandling = false;
@@ -55,15 +55,15 @@ public class ReactiveChainer implements OnResultListener, NetHandle {
 
 		else {
 			synchronized (mChains) {
-				for (HandleChain chain : mChains) {
+				for (NetLink chain : mChains) {
 					chain.result(false);
 				}
 			}
 		}
 	}
 
-	private HandleChain setChain() {
-		HandleChain chain = mChains.remove(0);
+	private NetLink setChain() {
+		NetLink chain = mChains.remove(0);
 		chain.setOnResultListener(this);
 		chain.setMainChain();
 		mNetwork.changeHandle(chain);
@@ -72,7 +72,7 @@ public class ReactiveChainer implements OnResultListener, NetHandle {
 
 	private void setNextChain() {
 		if (mChains.size() > 0) {
-			HandleChain chain = setChain();
+			NetLink chain = setChain();
 			chain.chainning(mNetwork.getPeerConnection(), mNetwork.getNextSequence());
 		} else if (mConnectionOriented) {
 			dummy.chainning(mNetwork.getPeerConnection(), mNetwork.getNextSequence());
