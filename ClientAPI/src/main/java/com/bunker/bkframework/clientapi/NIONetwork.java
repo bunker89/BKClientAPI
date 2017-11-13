@@ -4,9 +4,6 @@ import java.nio.ByteBuffer;
 
 import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.PeerConnection;
-import com.bunker.bkframework.clientapi.NetHandle;
-import com.bunker.bkframework.clientapi.Network;
-import com.bunker.bkframework.clientapi.PeerNIOClient;
 
 public class NIONetwork implements Network, Business<ByteBuffer> {
 	private NetHandle mHandle;
@@ -14,12 +11,17 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 	private PeerConnection mConnector;
 	private Thread mThread;
 	private PeerNIOClient mClient;
+	private String mUrl;
+	private int mPort;
+	
+	protected NIONetwork() {
+		
+	}
 
 	public NIONetwork(NetHandle handle, String url, int port) {
 		mHandle = handle;
-		mClient = new PeerNIOClient(this,
-				url,
-				port);
+		mUrl = url;
+		mPort = port;
 	}
 
 	@Override
@@ -28,6 +30,9 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 		mHandle.chainning(b, mSeq++);
 	}
 
+	protected void setPeerConnection(PeerConnection p) {
+		mConnector = p;
+	}
 	@Override
 	public void receive(PeerConnection connector, byte[] data, int sequence) {
 		mHandle.receive(connector, data, sequence);
@@ -40,6 +45,7 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 
 	@Override
 	public void start() {
+		mClient = createPeer();
 		mThread = new Thread(mClient);
 		mThread.start();
 	}
@@ -61,5 +67,12 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 
 	public void setWriteBufferSize(int sizeKB) {
 		mClient.setWriterBufferSize(sizeKB);
+	}
+
+	protected PeerNIOClient createPeer() {
+		return new PeerNIOClient(this,
+				mUrl,
+				mPort);
+		
 	}
 }

@@ -2,9 +2,7 @@ package com.bunker.bkframework.clientapi;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.PeerConnection;
-import com.bunker.bkframework.sec.SSLSecureFactory;
 import com.bunker.bkframework.sec.SecureFactory;
 
 /**
@@ -17,66 +15,30 @@ import com.bunker.bkframework.sec.SecureFactory;
  *
  *
  */
-public class SSLNIONetwork implements Business<ByteBuffer>, HandShakeCallback, Network {
+public class SSLNIONetwork extends NIONetwork implements HandShakeCallback {
 	private NetHandle mHandle;
-	private int mSeq = 1000;
-	private PeerConnection mConnector;
-	private Thread mThread;
 	private PeerNIOClient mClient;
 	private boolean mHandshaked = false;
-
-	public SSLNIONetwork(NetHandle handle, String url, int port) {
-		this("client.keystore", handle, url, port);
-	}
-
-	public SSLNIONetwork(String keyPath, NetHandle handle, String url, int port) {
-		this(new SSLSecureFactory("client.keystore", "server", "client.keystore", "server", "client", 1), handle, url, port);
-	}
+	private SecureFactory<ByteBuffer> mSecFac;
+	private String mUrl;
+	private int mPort;
 
 	public SSLNIONetwork(SecureFactory<ByteBuffer> secFac, NetHandle handle, String url, int port) {
 		mHandle = handle;
-		mClient = new PeerNIOClient(secFac,
-				this,
-				url,
-				port);
-		mClient.setHandshakeCallback(this);
+		mSecFac = secFac;
+		mUrl = url;
+		mPort = port;
 	}
 
 	@Override
 	public void established(PeerConnection b) {
-		mConnector = b;
-	}
-
-	@Override
-	public void receive(PeerConnection connector, byte[] data, int sequence) {
-		mHandle.receive(connector, data, sequence);
-	}
-
-	@Override
-	public void removeBusinessData(PeerConnection connector) {
-		mHandle.broken();
+		setPeerConnection(b);
 	}
 
 	@Override
 	public void handshaked() {
 		mHandshaked = true;
-		mHandle.chainning(mConnector, getNextSequence());
-	}
-
-	@Override
-	public void start() {
-		mThread = new Thread(mClient);
-		mThread.start();
-	}
-
-	@Override
-	public void changeHandle(NetHandle handle) {
-		mHandle = handle;
-	}
-
-	@Override
-	synchronized public int getNextSequence() {
-		return mSeq++;
+		mHandle.chainning(super.getPeerConnection(), getNextSequence());
 	}
 
 	@Override
@@ -88,10 +50,19 @@ public class SSLNIONetwork implements Business<ByteBuffer>, HandShakeCallback, N
 				e.printStackTrace();
 			}
 		}
-		return mConnector;
+		return super.getPeerConnection();
 	}
-	
+
 	public void setWriteBufferSizeKB(int size) {
 		mClient.setWriterBufferSize(size);
+	}
+
+	protected PeerNIOClient createPeer() {
+		mClient = new PeerNIOClient(mSecFac,
+				this,
+				mUrl,
+				mPort);
+		mClient.setHandshakeCallback(this);
+		return mClient;
 	}
 }
