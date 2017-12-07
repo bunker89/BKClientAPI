@@ -30,9 +30,6 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 		mHandle.chainning(b, mSeq++);
 	}
 
-	protected void setPeerConnection(PeerConnection p) {
-		mConnector = p;
-	}
 	@Override
 	public void receive(PeerConnection connector, byte[] data, int sequence) {
 		mHandle.receive(connector, data, sequence);
@@ -74,5 +71,13 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 				mUrl,
 				mPort);
 		
+	}
+
+	public String getUrl() {
+		return mUrl;
+	}
+
+	public int getPort() {
+		return mPort;
 	}
 }

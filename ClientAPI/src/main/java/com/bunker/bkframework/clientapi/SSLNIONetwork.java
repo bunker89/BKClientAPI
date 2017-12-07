@@ -16,29 +16,25 @@ import com.bunker.bkframework.sec.SecureFactory;
  *
  */
 public class SSLNIONetwork extends NIONetwork implements HandShakeCallback {
-	private NetHandle mHandle;
 	private PeerNIOClient mClient;
 	private boolean mHandshaked = false;
 	private SecureFactory<ByteBuffer> mSecFac;
-	private String mUrl;
-	private int mPort;
+	private PeerConnection mConnection;
 
 	public SSLNIONetwork(SecureFactory<ByteBuffer> secFac, NetHandle handle, String url, int port) {
-		mHandle = handle;
+		super(handle, url, port);
 		mSecFac = secFac;
-		mUrl = url;
-		mPort = port;
 	}
 
 	@Override
 	public void established(PeerConnection b) {
-		setPeerConnection(b);
+		mConnection = b;
 	}
 
 	@Override
 	public void handshaked() {
 		mHandshaked = true;
-		mHandle.chainning(super.getPeerConnection(), getNextSequence());
+		super.established(mConnection);
 	}
 
 	@Override
@@ -57,11 +53,12 @@ public class SSLNIONetwork extends NIONetwork implements HandShakeCallback {
 		mClient.setWriterBufferSize(size);
 	}
 
+	@Override
 	protected PeerNIOClient createPeer() {
 		mClient = new PeerNIOClient(mSecFac,
 				this,
-				mUrl,
-				mPort);
+				getUrl(),
+				getPort());
 		mClient.setHandshakeCallback(this);
 		return mClient;
 	}
