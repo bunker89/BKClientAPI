@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 
 import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.PeerConnection;
-import com.bunker.bkframework.clientapi.NetLink;
 import com.bunker.bkframework.clientapi.PeerNIOClient;
+import com.bunker.bkframework.clientapi.link.NetLink;
 import com.bunker.bkframework.newframework.Peer;
 
 public class ConnectServer {

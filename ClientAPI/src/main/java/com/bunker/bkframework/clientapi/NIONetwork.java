@@ -41,7 +41,10 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 	}
 
 	@Override
-	public void start() {
+	synchronized public void start() {
+		if (mThread != null)
+			return;
+
 		mClient = createPeer();
 		mThread = new Thread(mClient);
 		mThread.start();

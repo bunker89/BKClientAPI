@@ -1,11 +1,11 @@
-package test;
+package chainer;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.bunker.bkframework.business.PeerConnection;
-import com.bunker.bkframework.clientapi.Chainer;
-import com.bunker.bkframework.clientapi.NetLink;
+import com.bunker.bkframework.clientapi.link.Chainer;
+import com.bunker.bkframework.clientapi.link.NetLink;
 
 import network.TestNetwork;
 

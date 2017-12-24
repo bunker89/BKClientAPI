@@ -21,6 +21,7 @@ targetCompatibility = 1.7
 
 dependencies {
     // The production code uses Guava
+    compile 'org.json:json:20171018'
     compile 'com.google.guava:guava:20.0'
     compile 'com.github.bunker89:BKFramwork:a9e33b2441'
     // Use JUnit test framework
