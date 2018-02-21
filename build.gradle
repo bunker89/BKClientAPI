@@ -23,7 +23,7 @@ dependencies {
     // The production code uses Guava
     compile 'org.json:json:20171018'
     compile 'com.google.guava:guava:20.0'
-    compile 'com.github.bunker89:BKFramwork:a9e33b2441'
+    compile 'com.github.bunker89:BKFramwork:3731295729'
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
 }
