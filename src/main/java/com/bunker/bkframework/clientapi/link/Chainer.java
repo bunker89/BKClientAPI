@@ -12,21 +12,21 @@ import com.bunker.bkframework.clientapi.transaction.TransactionManager;
  * @author bunker89
  *
  */
-public class Chainer implements OnResultListener {
-	private List<NetLink> mChains = new LinkedList<>();
-	private Network mNetwork;
+public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener {
+	private List<NetLink<SendDataType, ReceiveDataType>> mChains = new LinkedList<>();
+	private Network<SendDataType, ReceiveDataType> mNetwork;
 	private boolean mConnectionOriented;
 	private boolean mDummyHandling = false;
 	private TransactionManager mTransactionManager;
 
-	private NetLink dummy = new NetLink() {
+	private NetLink<SendDataType, ReceiveDataType> dummy = new NetLink<SendDataType, ReceiveDataType>() {
 
 		@Override
-		public void receive(PeerConnection b, byte[] data, int seq) {
+		public void receive(PeerConnection<SendDataType> b, ReceiveDataType data, int seq) {
 		}
 
 		@Override
-		public void chainning(PeerConnection b, int seq) {
+		public void chainning(PeerConnection<SendDataType> b, int seq) {
 			mDummyHandling = true;
 		}
 	};
@@ -40,12 +40,12 @@ public class Chainer implements OnResultListener {
 		mTransactionManager = new TransactionManager();
 	}
 
-	public Chainer(Chainer parent) {
+	public Chainer(Chainer<SendDataType, ReceiveDataType> parent) {
 		mConnectionOriented = false;
 		mTransactionManager = parent.getTransactionManager();
 	}
 
-	public void startNet(Network network) {
+	public void startNet(Network<SendDataType, ReceiveDataType> network) {
 		mNetwork = network;
 		if (mChains.isEmpty())
 			mChains.add(dummy);
@@ -53,7 +53,7 @@ public class Chainer implements OnResultListener {
 		network.start();
 	}
 
-	synchronized public void addChain(NetLink chain) {
+	synchronized public void addChain(NetLink<SendDataType, ReceiveDataType> chain) {
 		mChains.add(chain);
 
 		synchronized (mChains) {
@@ -82,15 +82,15 @@ public class Chainer implements OnResultListener {
 
 		else {
 			synchronized (mChains) {
-				for (NetLink chain : mChains) {
+				for (NetLink<SendDataType, ReceiveDataType> chain : mChains) {
 					chain.result(false);
 				}
 			}
 		}
 	}
 
-	private NetLink setLink() {
-		NetLink chain = mChains.remove(0);
+	private NetLink<SendDataType, ReceiveDataType> setLink() {
+		NetLink<SendDataType, ReceiveDataType> chain = mChains.remove(0);
 		chain.setOnResultListener(this);
 		chain.setMainChain();
 		mNetwork.changeHandle(chain);
@@ -110,7 +110,7 @@ public class Chainer implements OnResultListener {
 		}
 	}
 
-	private void nextLink(NetLink link) {
+	private void nextLink(NetLink<SendDataType, ReceiveDataType> link) {
 		if (mTransactionManager.isTransactioning())
 			mTransactionManager.addTransaction(link.toTransaction());
 

@@ -4,13 +4,13 @@ import java.nio.ByteBuffer;
 
 import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.PeerConnection;
-import com.bunker.bkframework.clientapi.PeerNIOClient;
 import com.bunker.bkframework.clientapi.link.NetLink;
+import com.bunker.bkframework.clientapi.nio.PeerNIOClient;
 import com.bunker.bkframework.newframework.Peer;
 
 public class ConnectServer {
 	public static void main(String []args) {
-		PeerNIOClient peer = new PeerNIOClient(new Business<ByteBuffer>() {
+		PeerNIOClient peer = new PeerNIOClient(new Business<ByteBuffer, byte[], byte[]>() {
 			
 			@Override
 			public void removeBusinessData(PeerConnection arg0) {

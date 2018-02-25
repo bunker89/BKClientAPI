@@ -10,34 +10,34 @@ import com.bunker.bkframework.clientapi.link.NetLink;
 import network.TestNetwork;
 
 public class ChainerTest {
-	private Chainer chainer;
+	private Chainer<byte[], byte[]> chainer;
 
 	@Before
 	public void setUp() throws Exception {
-		chainer = new Chainer(true);
+		chainer = new Chainer<byte[], byte[]>(true);
 	}
 
 	@Test
 	public void test() {
-		chainer.addChain(new NetLink() {
+		chainer.addChain(new NetLink<byte[], byte[]>() {
 			@Override
-			public void receive(PeerConnection b, byte[] data, int seq) {
+			public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
 			}
 
 			@Override
-			public void chainning(PeerConnection b, int seq) {
+			public void chainning(PeerConnection<byte[]> b, int seq) {
 				System.out.println("ChainerTest:test:innorHaindleChain1:chainning");
 				result(true);
 			}
 		});
 
-		chainer.addChain(new NetLink() {
+		chainer.addChain(new NetLink<byte[], byte[]>() {
 			@Override
-			public void receive(PeerConnection b, byte[] data, int seq) {
+			public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
 			}
 
 			@Override
-			public void chainning(PeerConnection b, int seq) {
+			public void chainning(PeerConnection<byte[]> b, int seq) {
 				System.out.println("ChainerTest:test:innorHaindleChain2:chainning");
 				result(true);
 			}
@@ -45,13 +45,13 @@ public class ChainerTest {
 
 		System.out.println("start");
 		chainer.startNet(new TestNetwork());
-		chainer.addChain(new NetLink() {
+		chainer.addChain(new NetLink<byte[], byte[]>() {
 			@Override
-			public void receive(PeerConnection b, byte[] data, int seq) {
+			public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
 			}
 
 			@Override
-			public void chainning(PeerConnection b, int seq) {
+			public void chainning(PeerConnection<byte[]> b, int seq) {
 				System.out.println("ChainerTest:test:innorHaindleChain3:chainning");
 				result(true);
 			}

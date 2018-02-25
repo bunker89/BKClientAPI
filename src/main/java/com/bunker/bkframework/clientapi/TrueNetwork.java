@@ -6,8 +6,8 @@ import java.util.Map;
 import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.newframework.Logger;
 
-public class TrueNetwork implements Network, PeerConnection {
-	private NetHandle mHandle;
+public class TrueNetwork<SendDataType, ReceiveDataTye> implements Network<SendDataType, ReceiveDataTye>, PeerConnection<SendDataType> {
+	private NetHandle<SendDataType, ReceiveDataTye> mHandle;
 	private boolean mIsStarted;
 	private Map<String, Object> mEnv = new HashMap<>();
 
@@ -19,7 +19,7 @@ public class TrueNetwork implements Network, PeerConnection {
 	}
 
 	@Override
-	public void changeHandle(NetHandle handle) {
+	public void changeHandle(NetHandle<SendDataType, ReceiveDataTye> handle) {
 		mHandle = handle;
 		if (mIsStarted) {
 			handle.chainning(this, 0);
@@ -32,7 +32,7 @@ public class TrueNetwork implements Network, PeerConnection {
 	}
 
 	@Override
-	public PeerConnection getPeerConnection() {
+	public PeerConnection<SendDataType> getPeerConnection() {
 		return this;
 	}
 
@@ -47,7 +47,7 @@ public class TrueNetwork implements Network, PeerConnection {
 	}
 
 	@Override
-	public void sendToPeer(byte[] arg0, int arg1) {
-		Logger.logging("TrueNetwork", new String(arg0));
+	public void sendToPeer(SendDataType arg0, int arg1) {
+		Logger.logging("TrueNetwork", arg0.toString());
 	}
 }

@@ -1,4 +1,4 @@
-package com.bunker.bkframework.clientapi;
+package com.bunker.bkframework.clientapi.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -9,6 +9,7 @@ import java.nio.channels.SocketChannel;
 import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.BusinessPeer;
 import com.bunker.bkframework.business.ByteBufferBusinessConnector;
+import com.bunker.bkframework.clientapi.HandShakeCallback;
 import com.bunker.bkframework.newframework.Constants;
 import com.bunker.bkframework.newframework.FixedSizeByteBufferPacketFactory;
 import com.bunker.bkframework.newframework.LifeCycle;
@@ -21,7 +22,7 @@ import com.bunker.bkframework.newframework.Writer;
 import com.bunker.bkframework.sec.SecureFactory;
 
 /**
- * ¼­¹ö°¡ ¾Æ´Ñ Å¬¶óÀÌ¾ðÆ®¿¡¼­ »ç¿ëÇÒ Å¬¶óÀÌ¾ðÆ® api
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ® api
  * Copyright 2016~ by bunker Corp.,
  * All rights reserved.
  *
@@ -30,7 +31,7 @@ import com.bunker.bkframework.sec.SecureFactory;
  *
  *
  */
-public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle, Resource<ByteBuffer> {
+public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> implements LifeCycle, Resource<ByteBuffer> {
 	private SocketChannel channel;
 	private String mInetAddr;
 	private int mPort;
@@ -38,11 +39,11 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 	private String mName = "Unknown";
 	private int mSize;
 
-	public PeerNIOClient(Business<ByteBuffer> business, String inetAddr, int port) {
+	public PeerNIOClient(Business<ByteBuffer, byte[], byte[]> business, String inetAddr, int port) {
 		this(null, business, inetAddr, port);
 	}
 
-	public PeerNIOClient(SecureFactory<ByteBuffer> secFactory, Business<ByteBuffer> business, String inetAddr, int port) {
+	public PeerNIOClient(SecureFactory<ByteBuffer> secFactory, Business<ByteBuffer, byte[], byte[]> business, String inetAddr, int port) {
 		super(new FixedSizeByteBufferPacketFactory(), secFactory, new ByteBufferBusinessConnector(business));
 		setLifeCycle(this);
 		mInetAddr = inetAddr;
@@ -124,7 +125,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer> implements LifeCycle
 	}
 
 	/**
-	 * ¸®¼Ò½ºÀÇ µð½ºÆ®·ÎÀÌ
+	 * ï¿½ï¿½ï¿½Ò½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½
 	 */
 	@Override
 	public void destroy() {

@@ -3,25 +3,25 @@ package com.bunker.bkframework.clientapi.link;
 import com.bunker.bkframework.clientapi.NetHandle;
 import com.bunker.bkframework.clientapi.transaction.Transaction;
 
-public abstract class NetLink implements NetHandle {
+public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandle<SendDataType, ReceiveDataType> {
 	public interface OnResultListener {
 		public void result(boolean result);
 	}
 
-	public interface OnLinkResultListener {
-		public void result(String key, NetLink link);
+	public interface OnLinkResultListener<SendDataType, ReceiveDataType> {
+		public void result(String key, NetLink<SendDataType, ReceiveDataType> link);
 	}
 
 	private OnResultListener mListener;
 	private String mLinkResultKey;
-	private OnLinkResultListener mLinkListener;
+	private OnLinkResultListener<SendDataType, ReceiveDataType> mLinkListener;
 	private boolean isHanding = false;
 
 	public void setOnResultListener(OnResultListener listener) {
 		mListener = listener;
 	}
 
-	public void estOnLinkResultListener(OnLinkResultListener listener, String key) {
+	public void estOnLinkResultListener(OnLinkResultListener<SendDataType, ReceiveDataType> listener, String key) {
 		mLinkResultKey = key;
 		mLinkListener = listener;
 	}

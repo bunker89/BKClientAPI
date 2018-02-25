@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.bunker.bkframework.business.PeerConnection;
 
-public class TestConnection implements PeerConnection {
+public class TestConnection implements PeerConnection<byte[]> {
 	private Map<String, Object> mEnviroment = new HashMap<>();
 	@Override
 	public void closePeer() {

@@ -3,9 +3,9 @@ import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.clientapi.NetHandle;
 import com.bunker.bkframework.clientapi.Network;
 
-public class TestNetwork implements Network {
-	private NetHandle mHandle;
-	private PeerConnection mConnection = new TestConnection();
+public class TestNetwork implements Network<byte[], byte[]> {
+	private NetHandle<byte[], byte[]> mHandle;
+	private PeerConnection<byte[]> mConnection = new TestConnection();
 
 	@Override
 	public void start() {
@@ -15,7 +15,7 @@ public class TestNetwork implements Network {
 	}
 
 	@Override
-	public void changeHandle(NetHandle handle) {
+	public void changeHandle(NetHandle<byte[], byte[]> handle) {
 		mHandle = handle;
 	}
 
@@ -25,7 +25,7 @@ public class TestNetwork implements Network {
 	}
 
 	@Override
-	public PeerConnection getPeerConnection() {
+	public PeerConnection<byte[]> getPeerConnection() {
 		return mConnection;
 	}
 }

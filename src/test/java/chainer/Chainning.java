@@ -12,16 +12,16 @@ import com.bunker.bkframework.clientapi.link.NetClearLink;
 import com.bunker.bkframework.clientapi.link.NetLink;
 
 public class Chainning {
-	private NetLink mTestLink = new NetLink() {
+	private NetLink<byte[], byte[]> mTestLink = new NetLink<byte[], byte[]>() {
 		private int i = 0;
 		
 		@Override
-		public void receive(PeerConnection b, byte[] data, int seq) {
+		public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
 			
 		}
 		
 		@Override
-		public void chainning(PeerConnection b, int seq) {
+		public void chainning(PeerConnection<byte[]> b, int seq) {
 			System.out.println("test" + i + ":" + b.getEnviroment());
 			i++;
 			b.getEnviroment().put("test" + i, "tt");
@@ -29,15 +29,15 @@ public class Chainning {
 		}
 	};
 
-	private NetLink mSubLink = new NetLink() {
+	private NetLink<byte[], byte[]> mSubLink = new NetLink<byte[], byte[]>() {
 		private int i = 0;
 
 		@Override
-		public void receive(PeerConnection b, byte[] data, int seq) {
+		public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
 		}
 
 		@Override
-		public void chainning(PeerConnection b, int seq) {
+		public void chainning(PeerConnection<byte[]> b, int seq) {
 			System.out.println("sub" + i + ":" + b.getEnviroment());
 			i++;
 			result(true);
@@ -45,23 +45,23 @@ public class Chainning {
 		}
 	};
 
-	private Network mNetwork;
+	private Network<byte[], byte[]> mNetwork;
 
 	@Before
 	public void setUp() throws Exception {
-		mNetwork = new TrueNetwork();
+		mNetwork = new TrueNetwork<byte[], byte[]>();
 	}
 
 	@Test
 	public void subChainTest() {
 		System.out.println("------subChainTest-----");
-		Chainer chainer = new Chainer();
+		Chainer<byte[], byte[]> chainer = new Chainer<byte[], byte[]>();
 		chainer.addChain(mTestLink);
 		chainer.addChain(mTestLink);
 
-		Network subNet = new TrueNetwork();
-		Chainer subChain = new Chainer(chainer);
-		subChain.addChain(new ChainerLink(subChain, subNet));
+		Network<byte[], byte[]> subNet = new TrueNetwork<byte[], byte[]>();
+		Chainer<byte[], byte[]> subChain = new Chainer<byte[], byte[]>(chainer);
+		subChain.addChain(new ChainerLink<byte[], byte[], byte[], byte[]>(subChain, subNet));
 		subChain.addChain(mSubLink);
 		subChain.addChain(mSubLink);
 		
@@ -72,8 +72,8 @@ public class Chainning {
 	@Test
 	public void networkChange() {
 		System.out.println("------networkChange-----");
-		Chainer chainer = new Chainer();
-		chainer.addChain(new NetClearLink(chainer));
-		chainer.startNet(new TrueNetwork());
+		Chainer<byte[], byte[]> chainer = new Chainer<byte[], byte[]>();
+		chainer.addChain(new NetClearLink<byte[], byte[]>(chainer));
+		chainer.startNet(new TrueNetwork<byte[], byte[]>());
 	}
 }

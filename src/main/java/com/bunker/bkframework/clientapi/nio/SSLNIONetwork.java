@@ -1,8 +1,10 @@
-package com.bunker.bkframework.clientapi;
+package com.bunker.bkframework.clientapi.nio;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import com.bunker.bkframework.business.PeerConnection;
+import com.bunker.bkframework.clientapi.HandShakeCallback;
+import com.bunker.bkframework.clientapi.NetHandle;
 import com.bunker.bkframework.sec.SecureFactory;
 
 /**
@@ -19,15 +21,15 @@ public class SSLNIONetwork extends NIONetwork implements HandShakeCallback {
 	private PeerNIOClient mClient;
 	private boolean mHandshaked = false;
 	private SecureFactory<ByteBuffer> mSecFac;
-	private PeerConnection mConnection;
+	private PeerConnection<byte[]> mConnection;
 
-	public SSLNIONetwork(SecureFactory<ByteBuffer> secFac, NetHandle handle, String url, int port) {
+	public SSLNIONetwork(SecureFactory<ByteBuffer> secFac, NetHandle<byte[], byte[]> handle, String url, int port) {
 		super(handle, url, port);
 		mSecFac = secFac;
 	}
 
 	@Override
-	public void established(PeerConnection b) {
+	public void established(PeerConnection<byte[]> b) {
 		mConnection = b;
 	}
 
@@ -38,7 +40,7 @@ public class SSLNIONetwork extends NIONetwork implements HandShakeCallback {
 	}
 
 	@Override
-	public PeerConnection getPeerConnection() {
+	public PeerConnection<byte[]> getPeerConnection() {
 		if (!mHandshaked) {
 			try {
 				throw new IOException("ssl not handshaked");

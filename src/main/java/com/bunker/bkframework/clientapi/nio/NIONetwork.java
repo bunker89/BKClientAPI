@@ -1,14 +1,16 @@
-package com.bunker.bkframework.clientapi;
+package com.bunker.bkframework.clientapi.nio;
 
 import java.nio.ByteBuffer;
 
 import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.PeerConnection;
+import com.bunker.bkframework.clientapi.NetHandle;
+import com.bunker.bkframework.clientapi.Network;
 
-public class NIONetwork implements Network, Business<ByteBuffer> {
-	private NetHandle mHandle;
+public class NIONetwork implements Network<byte[], byte[]>, Business<ByteBuffer, byte[], byte[]> {
+	private NetHandle<byte[], byte[]> mHandle;
 	private int mSeq = 1000;
-	private PeerConnection mConnector;
+	private PeerConnection<byte[]> mConnector;
 	private Thread mThread;
 	private PeerNIOClient mClient;
 	private String mUrl;
@@ -18,25 +20,25 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 		
 	}
 
-	public NIONetwork(NetHandle handle, String url, int port) {
+	public NIONetwork(NetHandle<byte[], byte[]> handle, String url, int port) {
 		mHandle = handle;
 		mUrl = url;
 		mPort = port;
 	}
 
 	@Override
-	public void established(PeerConnection b) {
+	public void established(PeerConnection<byte[]> b) {
 		mConnector = b;
 		mHandle.chainning(b, mSeq++);
 	}
 
 	@Override
-	public void receive(PeerConnection connector, byte[] data, int sequence) {
+	public void receive(PeerConnection<byte[]> connector, byte[] data, int sequence) {
 		mHandle.receive(connector, data, sequence);
 	}
 
 	@Override
-	public void removeBusinessData(PeerConnection connector) {
+	public void removeBusinessData(PeerConnection<byte[]> connector) {
 		mHandle.broken();
 	}
 
@@ -51,7 +53,7 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 	}
 
 	@Override
-	public void changeHandle(NetHandle handle) {
+	public void changeHandle(NetHandle<byte[], byte[]> handle) {
 		mHandle = handle;
 	}
 
@@ -61,7 +63,7 @@ public class NIONetwork implements Network, Business<ByteBuffer> {
 	}
 
 	@Override
-	public PeerConnection getPeerConnection() {
+	public PeerConnection<byte[]> getPeerConnection() {
 		return mConnector;
 	}
 
