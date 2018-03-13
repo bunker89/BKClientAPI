@@ -58,7 +58,7 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 		private void kill() {
 			synchronized (mChains) {
 				if (!mEvented) {
-					mAlived = true;
+					mAlived = false;
 					mNetwork.getPeerConnection().closePeer();
 				}
 			}

@@ -45,6 +45,11 @@ public class ChainerTest {
 
 		System.out.println("start");
 		chainer.startNet(new TestNetwork());
+		try {
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		chainer.addChain(new NetLink<byte[], byte[]>() {
 			@Override
 			public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
@@ -56,5 +61,11 @@ public class ChainerTest {
 				result(true);
 			}
 		});
+		try {
+			Thread.sleep(10000000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
