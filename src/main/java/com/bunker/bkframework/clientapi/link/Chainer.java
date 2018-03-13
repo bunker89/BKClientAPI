@@ -1,5 +1,6 @@
 package com.bunker.bkframework.clientapi.link;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,10 +15,15 @@ import com.bunker.bkframework.clientapi.transaction.TransactionManager;
  */
 public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener {
 	private List<NetLink<SendDataType, ReceiveDataType>> mChains = new LinkedList<>();
+	private List<NetLink<SendDataType, ReceiveDataType>> mStaticChains = new LinkedList<>();
 	private Network<SendDataType, ReceiveDataType> mNetwork;
 	private boolean mConnectionOriented;
 	private boolean mDummyHandling = false;
 	private TransactionManager mTransactionManager;
+	private int mKeepAliveTime = 5000;
+	private boolean mIsKilling = false;
+	private boolean mEvented = false;
+	private boolean mAlived = true;
 
 	private NetLink<SendDataType, ReceiveDataType> dummy = new NetLink<SendDataType, ReceiveDataType>() {
 
@@ -28,6 +34,34 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 		@Override
 		public void chainning(PeerConnection<SendDataType> b, int seq) {
 			mDummyHandling = true;
+			synchronized (dummy) {
+				if (mIsKilling) {
+					return;
+				}
+				mIsKilling = true;
+				mEvented = false;
+				Thread killThread = new Thread() {
+					public void run() {
+						try {
+							Thread.sleep(mKeepAliveTime);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						kill();
+						mIsKilling = false;
+					}
+				};
+				killThread.start();			
+			}
+		}
+
+		private void kill() {
+			synchronized (mChains) {
+				if (!mEvented) {
+					mAlived = true;
+					mNetwork.getPeerConnection().closePeer();
+				}
+			}
 		}
 	};
 
@@ -45,6 +79,10 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 		mTransactionManager = parent.getTransactionManager();
 	}
 
+	public void setKeepAliveTime(int timeMillisec) {
+		mKeepAliveTime = timeMillisec;
+	}
+
 	public void startNet(Network<SendDataType, ReceiveDataType> network) {
 		mNetwork = network;
 		if (mChains.isEmpty())
@@ -57,6 +95,12 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 		mChains.add(chain);
 
 		synchronized (mChains) {
+			mEvented = true;
+			if (!mAlived) {
+				mAlived = true;
+				reContainChain();
+				return;
+			}
 			if (mDummyHandling) {
 				mDummyHandling = false;
 				AsyncDeamon.getInstance().addTask(new AsyncRun() {
@@ -71,8 +115,21 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 						return null;
 					}
 				});
-			}			
+			}
 		}
+	}
+	
+	private void reContainChain() {
+		Iterator<NetLink<SendDataType, ReceiveDataType>> iter = mStaticChains.iterator();
+		while (iter.hasNext()) {
+			mChains.add(iter.next());
+		}
+		mNetwork.start();
+	}
+
+	public void addStaticChain(NetLink<SendDataType, ReceiveDataType> chain) {
+		mStaticChains.add(chain);
+		addChain(chain);
 	}
 
 	@Override
