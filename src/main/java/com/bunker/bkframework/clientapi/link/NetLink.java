@@ -4,12 +4,12 @@ import com.bunker.bkframework.clientapi.NetHandle;
 import com.bunker.bkframework.clientapi.transaction.Transaction;
 
 public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandle<SendDataType, ReceiveDataType> {
-	public interface OnResultListener {
+	interface OnResultListener {
 		public void result(boolean result);
 	}
 
 	public interface OnLinkResultListener<SendDataType, ReceiveDataType> {
-		public void result(String key, NetLink<SendDataType, ReceiveDataType> link);
+		public void result(String key, Object link);
 	}
 
 	private OnResultListener mListener;
@@ -48,5 +48,9 @@ public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandl
 
 	public Transaction toTransaction() {
 		return null;
+	}
+
+	public void setTimeout(long timeMillisec) {
+		
 	}
 }

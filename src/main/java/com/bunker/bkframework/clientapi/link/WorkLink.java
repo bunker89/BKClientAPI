@@ -9,16 +9,16 @@ import com.bunker.bkframework.business.PeerConnection;
  * Created by WIN7 on 10�� 20�� 0020.
  */
 
-abstract public class WorkLink extends NetLink<byte[], byte[]> {
+abstract public class WorkLink extends NetLink<byte[], byte[]> implements JSONLink {
 
     @Override
     final public void receive(PeerConnection<byte[]> peerConnection, byte[] bytes, int i) {
         try {
             JSONObject json = new JSONObject(new String(bytes));
             boolean result = json.getBoolean("result");
-            result(result);
             if (result)
                 receiveJSON(result, json);
+            result(result);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -34,8 +34,4 @@ abstract public class WorkLink extends NetLink<byte[], byte[]> {
             e.printStackTrace();
         }
     }
-
-    protected abstract int getWork();
-    protected abstract JSONObject getJson();
-    protected abstract void receiveJSON(boolean result, JSONObject json);
 }
