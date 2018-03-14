@@ -7,8 +7,6 @@ import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.clientapi.link.Chainer;
 import com.bunker.bkframework.clientapi.link.NetLink;
 
-import network.TestNetwork;
-
 public class ChainerTest {
 	private Chainer<byte[], byte[]> chainer;
 
@@ -44,9 +42,8 @@ public class ChainerTest {
 		});
 
 		System.out.println("start");
-		chainer.startNet(new TestNetwork());
 		try {
-			Thread.sleep(6000);
+			Thread.sleep(4000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

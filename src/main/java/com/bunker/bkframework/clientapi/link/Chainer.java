@@ -8,12 +8,14 @@ import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.clientapi.Network;
 import com.bunker.bkframework.clientapi.link.NetLink.OnResultListener;
 import com.bunker.bkframework.clientapi.transaction.TransactionManager;
+import com.bunker.bkframework.newframework.Logger;
 
 /**
  * @author bunker89
  *
  */
 public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener {
+	private final String _TAG = "Chainer";
 	private List<NetLink<SendDataType, ReceiveDataType>> mChains = new LinkedList<>();
 	private List<NetLink<SendDataType, ReceiveDataType>> mStaticChains = new LinkedList<>();
 	private Network<SendDataType, ReceiveDataType> mNetwork;
@@ -21,9 +23,9 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 	private boolean mDummyHandling = false;
 	private TransactionManager mTransactionManager;
 	private int mKeepAliveTime = 5000;
-	private boolean mIsKilling = false;
 	private boolean mEvented = false;
 	private boolean mAlived = true;
+	private Thread mKillThread;
 
 	private NetLink<SendDataType, ReceiveDataType> dummy = new NetLink<SendDataType, ReceiveDataType>() {
 
@@ -35,23 +37,26 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 		public void chainning(PeerConnection<SendDataType> b, int seq) {
 			mDummyHandling = true;
 			synchronized (dummy) {
-				if (mIsKilling) {
-					return;
+				if (mKillThread != null) {
+					mKillThread.interrupt();
 				}
-				mIsKilling = true;
+				
 				mEvented = false;
-				Thread killThread = new Thread() {
+				mKillThread = new Thread() {
 					public void run() {
 						try {
 							Thread.sleep(mKeepAliveTime);
 						} catch (InterruptedException e) {
-							e.printStackTrace();
+							Logger.logging(_TAG, "kill thread interrupted");
+							return;
 						}
 						kill();
-						mIsKilling = false;
+						synchronized (dummy) {
+							mKillThread = null;
+						}
 					}
 				};
-				killThread.start();			
+				mKillThread.start();			
 			}
 		}
 
@@ -98,6 +103,7 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 			mEvented = true;
 			if (!mAlived) {
 				mAlived = true;
+				setLink();
 				reContainChain();
 				return;
 			}
@@ -118,7 +124,17 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 			}
 		}
 	}
-	
+
+	public boolean removeChain(NetLink<SendDataType, ReceiveDataType> chain) {
+		synchronized (mChains) {
+			if (mChains.contains(chain)) {
+				mChains.remove(chain);
+				return true;
+			}
+			return false;
+		}
+	}
+
 	private void reContainChain() {
 		Iterator<NetLink<SendDataType, ReceiveDataType>> iter = mStaticChains.iterator();
 		while (iter.hasNext()) {
@@ -130,6 +146,13 @@ public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener 
 	public void addStaticChain(NetLink<SendDataType, ReceiveDataType> chain) {
 		mStaticChains.add(chain);
 		addChain(chain);
+	}
+
+	public boolean removeStaticChain(NetLink<SendDataType, ReceiveDataType> chain) {
+		if (mStaticChains.contains(chain)) {
+			mStaticChains.remove(chain);
+		}
+		return removeChain(chain);
 	}
 
 	@Override
