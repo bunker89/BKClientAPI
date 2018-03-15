@@ -8,29 +8,29 @@ public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandl
 		public void result(boolean result);
 	}
 
-	public interface OnLinkResultListener<SendDataType, ReceiveDataType> {
-		public void result(String key, Object link);
+	public interface OnLinkResultListener {
+		public void result(boolean result, String key, Object link);
 	}
 
 	private OnResultListener mListener;
 	private String mLinkResultKey;
-	private OnLinkResultListener<SendDataType, ReceiveDataType> mLinkListener;
+	private OnLinkResultListener mLinkListener;
 	private boolean isHanding = false;
 
 	public void setOnResultListener(OnResultListener listener) {
 		mListener = listener;
 	}
 
-	public void estOnLinkResultListener(OnLinkResultListener<SendDataType, ReceiveDataType> listener, String key) {
+	public void setOnLinkResultListener(OnLinkResultListener listener, String key) {
 		mLinkResultKey = key;
 		mLinkListener = listener;
 	}
 
 	protected void result(boolean result) {
+		if (mLinkListener != null && isHanding)
+			mLinkListener.result(result, mLinkResultKey, this);
 		if (mListener != null && isHanding)
 			mListener.result(result);
-		if (mLinkListener != null && isHanding)
-			mLinkListener.result(mLinkResultKey, this);
 		isHanding = false;
 	}
 
