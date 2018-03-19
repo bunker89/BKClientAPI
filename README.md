@@ -15,17 +15,18 @@
 Link를 네트워크 전송 타입과 분리 시키기 위해서는 제너릭을 없앨 수 있는 JSONAdpter와 같은 어뎁터를 만들어 사용하길 권장한다.
 
 #  Business 
-Chainer 링크들을 묶기 위한 클래스
+Chainer 링크들을 묶기 위한 클래스<br />
  └ BytesJSONChainer JSONAdapter를 Chainer로 묶을 수 있게 만드는 Chainer
 
-NetHandle 네트워크에 들어갈 비즈니스 로직
- └ NetLink Chainer에 묶여져서 연속적으로 동작되는 NetHandle     └BytesJSONBridgeLink JSONAdapter를 NetLink처럼 사용할 수 있도록 하는 클래스
+NetHandle 네트워크에 들어갈 비즈니스 로직<br />
+ └ NetLink Chainer에 묶여져서 연속적으로 동작되는 NetHandle<br />
+ └BytesJSONBridgeLink JSONAdapter를 NetLink처럼 사용할 수 있도록 하는 클래스
 
 #  JSON
 JSONAdapter JSON 로직과 네트워크 데이터타입관의 종속을 없애기 위해 만들어진 클래스
 
 #  Network 
-NIONetwork NIO 통신 클래스
+NIONetwork NIO 통신 클래스<br />
  └SSLNIONetwork SSL 전송을 제공하는 NIONetwork
 
 #  Peer 
