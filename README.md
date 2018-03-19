@@ -33,9 +33,9 @@ PeerNIOClient BKFramework의 NIO Peer
 
 #  Usage
 1. Single Business
-  NetHandle<byte[], byte[]> handle = ...
-  Network<byte[], byte[]> network = new NIONetwork(handle, url, port);
-  network.start();
+  NetHandle<byte[], byte[]> handle = ...<br />
+  Network<byte[], byte[]> network = new NIONetwork(handle, url, port);<br />
+  network.start();<br />
 
 2. Chained Business
   Chainer<byte[], byte[]> chainer = new Chainer(true);<br />
