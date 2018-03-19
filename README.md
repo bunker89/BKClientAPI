@@ -38,13 +38,13 @@ PeerNIOClient BKFramework의 NIO Peer
   network.start();
 
 2. Chained Business
-  Chainer<byte[], byte[]> chainer = new Chainer(true);
-  chainer.addChain(handle1);
-  chainer.addChain(handle2);
-  chainer.addChain(handle3);
-  chainer.startNet(network);
-  chainer.addChain(handle4);
-  chainer.addChain(handle5);
+  Chainer<byte[], byte[]> chainer = new Chainer(true);<br />
+  chainer.addChain(handle1);<br />
+  chainer.addChain(handle2);<br />
+  chainer.addChain(handle3);<br />
+  chainer.startNet(network);<br />
+  chainer.addChain(handle4);<br />
+  chainer.addChain(handle5);<br />
 
 3. network/JSON separation
 ...
