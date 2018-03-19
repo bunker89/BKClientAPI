@@ -1,6 +1,6 @@
 # BKClientAPI
+클라이언트 수준에서 마이크로 서비스를 제공하기 위해 네트워크/비즈니스 간 처리 과정을 완전하게 분리시킨다.
 
-  
 
 #  Business 
 Chainer 링크들을 묶기 위한 클래스
@@ -18,3 +18,23 @@ NIONetwork NIO 통신 클래스
 
 #  Peer 
 PeerNIOClient BKFramework의 NIO Peer
+
+#  Usage
+1. Single Business
+  NetHandle<byte[], byte[]> handle = ...
+  Network<byte[], byte[]> network = new NIONetwork(handle, url, port);
+  network.start();
+
+2. Chained Business
+  Chainer<byte[], byte[]> chainer = new Chainer(true);
+  chainer.addChain(handle1);
+  chainer.addChain(handle2);
+  chainer.addChain(handle3);
+  chainer.startNet(network);
+  chainer.addChain(handle4);
+  chainer.addChain(handle5);
+
+3. network/JSON separation
+...
+  chainer.add(new BytesJSONBridgeLink(jsonAdapter));
+...
