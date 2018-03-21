@@ -26,5 +26,8 @@ public abstract class JSONAdapter {
 	public void setOnLinkResultListener(OnLinkResultListener listener, String key) {
 		mResult = listener;
 		mResultKey = key;
+		if (mLink != null) {
+			mLink.setOnLinkResultListener(listener, key);
+		}
 	}
 }

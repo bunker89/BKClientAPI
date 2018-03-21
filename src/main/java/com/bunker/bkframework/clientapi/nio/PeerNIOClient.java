@@ -22,7 +22,7 @@ import com.bunker.bkframework.newframework.Writer;
 import com.bunker.bkframework.sec.SecureFactory;
 
 /**
- * ������ �ƴ� Ŭ���̾�Ʈ���� ����� Ŭ���̾�Ʈ api
+ * 占쏙옙占쏙옙占쏙옙 占싣댐옙 클占쏙옙占싱억옙트占쏙옙占쏙옙 占쏙옙占쏙옙占� 클占쏙옙占싱억옙트 api
  * Copyright 2016~ by bunker Corp.,
  * All rights reserved.
  *
@@ -32,7 +32,7 @@ import com.bunker.bkframework.sec.SecureFactory;
  *
  */
 public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> implements LifeCycle, Resource<ByteBuffer> {
-	private SocketChannel channel;
+	private SocketChannel mChannel;
 	private String mInetAddr;
 	private int mPort;
 	private HandShakeCallback mCallback;
@@ -72,7 +72,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 			try {
 				int readSize =  0;
 				while (readSize != Constants.PACKET_DEFAULT_TOTAL_SIZE) {
-					int current = channel.read(b);
+					int current = mChannel.read(b);
 					readSize += current;
 					if (current < 0) {
 						close();
@@ -95,9 +95,9 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 	private boolean startNetwork() {
 		try {
 			InetSocketAddress hostAddress = new InetSocketAddress(mInetAddr, mPort);
-			channel = SocketChannel.open(hostAddress);
-			channel.configureBlocking(true);
-			Writer<ByteBuffer> writer = new NIOWriter(channel, null);
+			mChannel = SocketChannel.open(hostAddress);
+			mChannel.configureBlocking(true);
+			Writer<ByteBuffer> writer = new NIOWriter(mChannel, null);
 			if (mSize > 0)
 				writer.setWriteBufferSize(mSize);
 			setWriter(writer);
@@ -125,7 +125,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 	}
 
 	/**
-	 * ���ҽ��� ��Ʈ����
+	 * 占쏙옙占쌀쏙옙占쏙옙 占쏙옙트占쏙옙占쏙옙
 	 */
 	@Override
 	public void destroy() {
@@ -141,5 +141,9 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 
 	public void setWriterBufferSize(int sizeKB) {
 		mSize = sizeKB;
+	}
+
+	public SocketChannel getSocket() {
+		return mChannel;
 	}
 }

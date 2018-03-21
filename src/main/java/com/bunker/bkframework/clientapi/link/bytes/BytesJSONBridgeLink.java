@@ -9,10 +9,10 @@ import com.bunker.bkframework.clientapi.link.NetLink;
 
 public class BytesJSONBridgeLink extends NetLink<byte[], byte[]>{
 	private JSONAdapter mAdapter;
-	private OnLinkResultListener mResult;
 
 	public BytesJSONBridgeLink(JSONAdapter adapter) {
 		mAdapter = adapter;
+		mAdapter.setLink(this);
 	}
 	
 	@Override
@@ -27,22 +27,10 @@ public class BytesJSONBridgeLink extends NetLink<byte[], byte[]>{
 			e.printStackTrace();
 		}
 	}
-	
-	@Override
-	public void setOnLinkResultListener(OnLinkResultListener listener, String key) {
-		mResult = listener;
-	}
 
 	@Override
 	final public void chainning(PeerConnection<byte[]> peerConnection, int index) {
 		JSONObject json = mAdapter.getJson();
 		peerConnection.sendToPeer(json.toString().getBytes(), index);
-	}
-
-	@Override
-	protected void linkResult(boolean result, String key) {
-		if (mResult != null) {
-			mResult.result(result, key, mAdapter);
-		}
 	}
 }
