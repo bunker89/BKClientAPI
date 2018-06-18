@@ -27,6 +27,12 @@ public abstract class JSONBridgeLink<SendDataType, ReceiveDataType> extends NetL
 			mListener.result(result, key, mAdapter);
 		}
 	}
+	
+	@Override
+	public void broken() {
+		super.broken();
+		mAdapter.broken();
+	}
 
 	@Override
 	final public void receive(PeerConnection<SendDataType> peerConnection, ReceiveDataType data, int i) {

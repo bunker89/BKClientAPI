@@ -129,7 +129,6 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 	 */
 	@Override
 	public void destroy() {
-
 	}
 
 	@Override

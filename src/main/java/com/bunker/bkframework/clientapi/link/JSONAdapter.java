@@ -30,4 +30,8 @@ public abstract class JSONAdapter {
 			mLink.setOnLinkResultListener(listener, key);
 		}
 	}
+	
+	public void broken() {
+		
+	}
 }
