@@ -36,7 +36,6 @@ public abstract class JSONBridgeLink<SendDataType, ReceiveDataType> extends NetL
 
 	@Override
 	final public void receive(PeerConnection<SendDataType> peerConnection, ReceiveDataType data, int i) {
-		
 		try {
 			JSONObject json = parseJSON(data);
 			boolean result = json.getBoolean("result");
