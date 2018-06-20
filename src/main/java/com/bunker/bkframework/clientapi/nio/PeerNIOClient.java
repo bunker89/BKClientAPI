@@ -8,17 +8,17 @@ import java.nio.channels.SocketChannel;
 
 import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.BusinessPeer;
-import com.bunker.bkframework.business.ByteBufferBusinessConnector;
 import com.bunker.bkframework.clientapi.HandShakeCallback;
 import com.bunker.bkframework.newframework.Constants;
 import com.bunker.bkframework.newframework.FixedSizeByteBufferPacketFactory;
 import com.bunker.bkframework.newframework.LifeCycle;
 import com.bunker.bkframework.newframework.Logger;
-import com.bunker.bkframework.newframework.NIOWriter;
 import com.bunker.bkframework.newframework.Peer;
 import com.bunker.bkframework.newframework.PeerLife;
 import com.bunker.bkframework.newframework.Resource;
 import com.bunker.bkframework.newframework.Writer;
+import com.bunker.bkframework.nio.ByteBufferBusinessConnector;
+import com.bunker.bkframework.nio.NIOWriter;
 import com.bunker.bkframework.sec.SecureFactory;
 
 /**
@@ -87,7 +87,11 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 				Logger.logging("PeerNIOClient", "connection closed:" + mName);
 				return;
 			}
-			life.life();
+			try {
+				life.life();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			b.clear();
 		}
 	}
@@ -144,5 +148,10 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 
 	public SocketChannel getSocket() {
 		return mChannel;
+	}
+
+	@Override
+	public String getClientHostInfo() {
+		return null;
 	}
 }
