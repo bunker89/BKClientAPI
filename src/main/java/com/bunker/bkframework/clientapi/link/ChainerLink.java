@@ -4,7 +4,7 @@ import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.clientapi.Network;
 
 public class ChainerLink<MainSend, MainReceive, SubSend, SubReceive> extends NetLink<MainSend, MainReceive> {
-	private Chainer<SubSend, SubReceive> mSubChainer;
+	private Chainable<SubSend, SubReceive> mSubChainer;
 	private Network<SubSend, SubReceive> mSubNetwork;
 	private PeerConnection<MainSend> mParentConnection;
 
@@ -33,7 +33,7 @@ public class ChainerLink<MainSend, MainReceive, SubSend, SubReceive> extends Net
 		}
 	};
 
-	public ChainerLink(Chainer<SubSend, SubReceive> subChainer, Network<SubSend, SubReceive> subNetwork) {
+	public ChainerLink(Chainable<SubSend, SubReceive> subChainer, Network<SubSend, SubReceive> subNetwork) {
 		mSubChainer = subChainer;
 		mSubNetwork = subNetwork;
 

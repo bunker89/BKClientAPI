@@ -14,7 +14,7 @@ import com.bunker.bkframework.newframework.Logger;
  * @author bunker89
  *
  */
-public class Chainer<SendDataType, ReceiveDataType> implements OnResultListener {
+public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDataType, ReceiveDataType>, OnResultListener {
 	private final String _TAG = "Chainer";
 	private List<NetLink<SendDataType, ReceiveDataType>> mChains = new LinkedList<>();
 	private List<NetLink<SendDataType, ReceiveDataType>> mStaticChains = new LinkedList<>();
