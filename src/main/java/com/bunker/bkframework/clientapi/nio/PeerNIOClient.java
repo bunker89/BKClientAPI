@@ -10,7 +10,6 @@ import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.BusinessPeer;
 import com.bunker.bkframework.clientapi.HandShakeCallback;
 import com.bunker.bkframework.newframework.Constants;
-import com.bunker.bkframework.newframework.FixedSizeByteBufferPacketFactory;
 import com.bunker.bkframework.newframework.LifeCycle;
 import com.bunker.bkframework.newframework.Logger;
 import com.bunker.bkframework.newframework.Peer;
@@ -18,6 +17,7 @@ import com.bunker.bkframework.newframework.PeerLife;
 import com.bunker.bkframework.newframework.Resource;
 import com.bunker.bkframework.newframework.Writer;
 import com.bunker.bkframework.nio.ByteBufferBusinessConnector;
+import com.bunker.bkframework.nio.FixedSizeByteBufferPacketFactory;
 import com.bunker.bkframework.nio.NIOWriter;
 import com.bunker.bkframework.sec.SecureFactory;
 
