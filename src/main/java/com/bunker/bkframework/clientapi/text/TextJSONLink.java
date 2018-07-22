@@ -1,13 +1,13 @@
-package com.bunker.bkframework.clientapi.http;
+package com.bunker.bkframework.clientapi.text;
 
 import org.json.JSONObject;
 
 import com.bunker.bkframework.clientapi.link.JSONAdapter;
 import com.bunker.bkframework.clientapi.link.JSONBridgeLink;
 
-public class HttpJSONLink extends JSONBridgeLink<String, String> {
+public class TextJSONLink extends JSONBridgeLink<String, String> {
 
-	public HttpJSONLink(JSONAdapter adapter) {
+	public TextJSONLink(JSONAdapter adapter) {
 		super(adapter);
 	}
 

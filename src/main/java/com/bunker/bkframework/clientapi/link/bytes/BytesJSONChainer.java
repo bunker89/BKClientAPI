@@ -18,11 +18,11 @@ public class BytesJSONChainer extends JSONAdapterChainer<byte[], byte[]> {
 	}
 
 	public void addChain(JSONAdapter json) {
-		BytesJSONBridgeLink link = new BytesJSONBridgeLink(json);
+		BytesJSONLink link = new BytesJSONLink(json);
 		super.addChain(link);
 	}
 
 	public void addStaticChain(JSONAdapter json) {
-		super.addStaticChain(new BytesJSONBridgeLink(json));
+		super.addStaticChain(new BytesJSONLink(json));
 	}
 }

@@ -4,16 +4,16 @@ import org.json.JSONObject;
 import org.junit.Test;
 
 import com.bunker.bkframework.clientapi.TrueNetwork;
-import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
 import com.bunker.bkframework.clientapi.link.JSONAdapter;
 import com.bunker.bkframework.clientapi.link.JSONBridgeLink;
+import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
 import com.bunker.bkframework.clientapi.link.SingleLink;
-import com.bunker.bkframework.clientapi.link.bytes.BytesJSONBridgeLink;
+import com.bunker.bkframework.clientapi.link.bytes.BytesJSONLink;
 
 public class JSONLink implements OnLinkResultListener {
 	@Test public void test() {
 		TrueNetwork<byte[], byte[]> network = new TrueNetwork<>();
-		JSONBridgeLink<byte[], byte[]> link = new BytesJSONBridgeLink(new JSONAdapter() {
+		JSONBridgeLink<byte[], byte[]> link = new BytesJSONLink(new JSONAdapter() {
 			
 			@Override
 			public void receiveJSON(boolean result, JSONObject json) {

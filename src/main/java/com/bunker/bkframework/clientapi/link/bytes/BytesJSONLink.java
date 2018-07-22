@@ -5,9 +5,9 @@ import org.json.JSONObject;
 import com.bunker.bkframework.clientapi.link.JSONAdapter;
 import com.bunker.bkframework.clientapi.link.JSONBridgeLink;
 
-public class BytesJSONBridgeLink extends JSONBridgeLink<byte[], byte[]> {
+public class BytesJSONLink extends JSONBridgeLink<byte[], byte[]> {
 
-	public BytesJSONBridgeLink(JSONAdapter adapter) {
+	public BytesJSONLink(JSONAdapter adapter) {
 		super(adapter);
 	}
 
