@@ -8,29 +8,24 @@ import org.json.JSONObject;
 
 public class MultiJSONLink extends JSONAdapter {
 	private List<JSONAdapter> mJSONs = new LinkedList<>();
-	private Object mWorkingKey = null;
 
-	public MultiJSONLink(Object workingKey) {
-		mWorkingKey = workingKey;
-	}
-	
 	@Override
 	public JSONObject getJson() {
 		JSONObject json = new JSONObject();
 		JSONArray array = new JSONArray();
-		json.put("working", mWorkingKey);
+		json.put(WorkConstants.WORKING, WorkConstants.MULTI_JSON_WORKING);
 
 		for (JSONAdapter j : mJSONs) {
 			array.put(j.getJson());
 		}
-		json.put("working_array", array);
+		json.put(WorkConstants.MULTI_JSON_WORKING_ARRAY, array);
 		return json;
 	}
 
 	@Override
 	public void receiveJSON(boolean result, JSONObject json) {
 		if (result) {
-			JSONArray array = json.getJSONArray("result_array");
+			JSONArray array = json.getJSONArray(WorkConstants.MULTI_JSON_RESULT_ARRAY);
 			System.out.println(array);			
 		}
 	}

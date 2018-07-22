@@ -39,6 +39,7 @@ public class TrueNetwork<SendDataType, ReceiveDataTye> implements Network<SendDa
 	@Override
 	public void closePeer() {
 		mIsStarted = false;
+		Logger.logging("TrueNetwork", "connection closed");
 	}
 
 	@Override
@@ -49,5 +50,9 @@ public class TrueNetwork<SendDataType, ReceiveDataTye> implements Network<SendDa
 	@Override
 	public void sendToPeer(SendDataType arg0, int arg1) {
 		Logger.logging("TrueNetwork", arg0.toString());
+	}
+	
+	public void sendToBusiness(ReceiveDataTye data) {
+		mHandle.receive(this, data, 0);
 	}
 }
