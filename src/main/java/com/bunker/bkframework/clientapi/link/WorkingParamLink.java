@@ -3,15 +3,25 @@ package com.bunker.bkframework.clientapi.link;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ParamDecoLink extends JSONAdapter {
+/**
+ * {"bk-work-param":
+ *   {"(fromAs)":[],
+ *    "(fromAs)":[]
+ *   }
+ * }
+ * 
+ * @author ys89
+ *
+ */
+public class WorkingParamLink extends JSONAdapter {
 	private JSONAdapter mOrigin;
 	private JSONObject mWorkingParam = new JSONObject();
 
-	public ParamDecoLink(JSONAdapter origin) {
+	public WorkingParamLink(JSONAdapter origin) {
 		mOrigin = origin;
 	}
 	
-	public ParamDecoLink addWorkingParam(String from, String srcKey, String destKey) {
+	public WorkingParamLink addWorkingParam(String from, String srcKey, String destKey) {
 		JSONArray array;
 		if (!mWorkingParam.has(from)) {
 			array = new JSONArray();
