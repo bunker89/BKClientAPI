@@ -24,6 +24,19 @@ NetHandle 네트워크에 들어갈 비즈니스 로직<br />
 
 #  JSON
 JSONAdapter JSON 로직과 네트워크 데이터타입관의 종속을 없애기 위해 만들어진 클래스
+BK Framework는 JSON에 대하여 서비스간 많은 기능을 제공한다.
+서버의 여러 가지 동작들을 묶어서 실행 가능하고 기능들 간에 매개변수 전달이 가능하다.
+아래는 plus와 minus가 등록된 서버에 3+3-3을 요청하는 코드이다.
+
+		JSONAdapterChainer chainer = new ...();
+		MultiJSONLink multiLink = new MultiJSONLink();
+		chainer.addChain(multiLink);
+		multiLink.addChain(new OpetatorChain("plus", 3f, 3f), "1");
+		
+		OpetatorChain minus = new OpetatorChain("minus", null, 3f);
+		multiLink.addChain(new WorkingParamLink(minus).addWorkingParam("1", "answer", "left"));
+
+		chainer.startNet(network);
 
 #  Network 
 NIONetwork NIO 통신 클래스<br />
