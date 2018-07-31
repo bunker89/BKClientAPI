@@ -40,7 +40,10 @@ public class MultiJSONLink extends JSONAdapter {
 	public void receiveJSON(boolean result, JSONObject json) {
 		if (result) {
 			JSONArray array = json.getJSONArray(WorkConstants.MULTI_WORKING_RESULT_ARRAY);
-			System.out.println(array);
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject resultJSON = array.getJSONObject(i);
+				mJSONs.remove(0).receiveJSON(resultJSON.getBoolean(WorkConstants.WORKING_RESULT), resultJSON);
+			}
 		}
 	}
 	
