@@ -33,11 +33,11 @@ public abstract class JSONAdapter {
 		return mResultParam;
 	}
 	
-	String getLinkResultKey() {
+	public String getLinkResultKey() {
 		return mResultKey;
 	}
 	
-	OnLinkResultListener getLinkResultListener() {
+	public OnLinkResultListener getLinkResultListener() {
 		return mResult;
 	}
 
