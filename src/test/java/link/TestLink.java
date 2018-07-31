@@ -2,10 +2,10 @@ package link;
 
 import org.json.JSONObject;
 
-import com.bunker.bkframework.clientapi.link.JSONAdapter;
+import com.bunker.bkframework.clientapi.link.JSONAdapterBase;
 import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
 
-public class TestLink extends JSONAdapter {
+public class TestLink extends JSONAdapterBase {
 
 	public TestLink() {
 		// TODO Auto-generated constructor stub

@@ -18,7 +18,7 @@ import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
  * @author 광수
  *
  */
-public class MultiJSONLink extends JSONAdapter {
+public class MultiJSONLink extends JSONAdapterBase {
 	private List<JSONAdapter> mJSONs = new LinkedList<>();
 
 	@Override

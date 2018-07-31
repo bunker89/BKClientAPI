@@ -2,8 +2,8 @@ package com.bunker.bkframework.clientapi.link.bytes;
 
 import org.json.JSONObject;
 
-import com.bunker.bkframework.clientapi.link.JSONAdapter;
 import com.bunker.bkframework.clientapi.link.JSONBridgeLink;
+import com.bunker.bkframework.clientapi.link.JSONAdapter;
 
 public class BytesJSONLink extends JSONBridgeLink<byte[], byte[]> {
 
