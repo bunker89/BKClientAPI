@@ -13,14 +13,12 @@ public interface JSONAdapter {
 
 	public void setResultAs(String as);
 
-	String getResultAs();
+	public String getResultAs();
 
-	JSONArray getResultParam();
+	public JSONArray getResultParam();
 
-	public String getLinkResultKey();
-
-	public OnLinkResultListener getLinkResultListener();
-
+	public void linkResult(boolean result);
+	
 	@SuppressWarnings("rawtypes")
 	public NetLink getLink();
 

@@ -1,6 +1,7 @@
 package com.bunker.bkframework.clientapi.link;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
 
@@ -18,30 +19,20 @@ public abstract class JSONAdapterBase implements JSONAdapter {
 		mLink = link;
 		mLink.setOnLinkResultListener(mResult, mResultKey);
 	}
-	
+
 	@Override
 	public void setResultAs(String as) {
 		mAs = as;
 	}
-	
+
 	@Override
 	public String getResultAs() {
 		return mAs;
 	}
-	
+
 	@Override
 	public JSONArray getResultParam() {
 		return mResultParam;
-	}
-	
-	@Override
-	public String getLinkResultKey() {
-		return mResultKey;
-	}
-	
-	@Override
-	public OnLinkResultListener getLinkResultListener() {
-		return mResult;
 	}
 
 	@Override
@@ -58,8 +49,15 @@ public abstract class JSONAdapterBase implements JSONAdapter {
 			mLink.setOnLinkResultListener(listener, key);
 		}
 	}
-	
+
 	@Override
 	public void broken() {
+	}
+
+	@Override
+	public void linkResult(boolean result) {
+		if (mResult != null) {
+			mResult.result(result, mResultKey, this);
+		}
 	}
 }

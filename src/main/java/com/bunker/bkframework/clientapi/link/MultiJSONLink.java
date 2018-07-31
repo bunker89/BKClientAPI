@@ -47,9 +47,7 @@ public class MultiJSONLink extends JSONAdapterBase {
 				boolean linkBool = linkJSON.getBoolean(WorkConstants.WORKING_RESULT);
 				JSONAdapter adapter = mJSONs.remove(0);
 				adapter.receiveJSON(linkBool, linkJSON);
-				OnLinkResultListener listener = adapter.getLinkResultListener();
-				if (listener != null) 
-					listener.result(result, adapter.getLinkResultKey(), adapter);
+				adapter.linkResult(linkBool);
 			}
 		}
 	}
