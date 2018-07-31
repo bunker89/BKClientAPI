@@ -4,16 +4,16 @@ import com.bunker.bkframework.clientapi.link.Chainer;
 import com.bunker.bkframework.clientapi.link.JSONAdapter;
 import com.bunker.bkframework.clientapi.link.JSONAdapterChainer;
 
-public class BytesJSONChainer extends JSONAdapterChainer<byte[], byte[]> {
-	public BytesJSONChainer() {
+public class BytesChainer extends JSONAdapterChainer<byte[], byte[]> {
+	public BytesChainer() {
 		super();
 	}
 
-	public BytesJSONChainer(boolean connectionOriented) {
+	public BytesChainer(boolean connectionOriented) {
 		super(connectionOriented);
 	}
 
-	public BytesJSONChainer(Chainer<byte[], byte[]> parent) {
+	public BytesChainer(Chainer<byte[], byte[]> parent) {
 		super(parent);
 	}
 

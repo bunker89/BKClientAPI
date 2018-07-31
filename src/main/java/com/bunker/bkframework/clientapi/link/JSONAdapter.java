@@ -32,6 +32,14 @@ public abstract class JSONAdapter {
 	JSONArray getResultParam() {
 		return mResultParam;
 	}
+	
+	String getLinkResultKey() {
+		return mResultKey;
+	}
+	
+	OnLinkResultListener getLinkResultListener() {
+		return mResult;
+	}
 
 	@SuppressWarnings("rawtypes")
 	public NetLink getLink() {
@@ -47,6 +55,5 @@ public abstract class JSONAdapter {
 	}
 	
 	public void broken() {
-		
 	}
 }

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import com.bunker.bkframework.clientapi.ClientBusiness;
 import com.bunker.bkframework.clientapi.NetHandle;
+import com.bunker.bkframework.clientapi.link.bytes.BytesChainer;
 
 public class NIONetwork extends ClientBusiness<ByteBuffer, byte[], byte[]> {
 	private Thread mThread;
@@ -47,5 +48,10 @@ public class NIONetwork extends ClientBusiness<ByteBuffer, byte[], byte[]> {
 
 	public int getPort() {
 		return mPort;
+	}
+	
+	public BytesChainer getSerialChainer(boolean oriented) {
+		BytesChainer chainer = new BytesChainer();
+		return chainer;
 	}
 }
