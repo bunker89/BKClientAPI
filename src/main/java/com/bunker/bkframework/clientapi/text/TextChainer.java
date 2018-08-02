@@ -1,19 +1,19 @@
 package com.bunker.bkframework.clientapi.text;
 
 import com.bunker.bkframework.clientapi.link.Chainer;
-import com.bunker.bkframework.clientapi.link.JSONAdapter;
 import com.bunker.bkframework.clientapi.link.JSONAdapterChainer;
+import com.bunker.bkframework.clientapi.link.JSONAdapter;
 
-public class TextJSONChainer extends JSONAdapterChainer<String, String> {
-	public TextJSONChainer() {
+public class TextChainer extends JSONAdapterChainer<String, String> {
+	public TextChainer() {
 		super();
 	}
 
-	public TextJSONChainer(boolean connectionOriented) {
+	public TextChainer(boolean connectionOriented) {
 		super(connectionOriented);
 	}
 
-	public TextJSONChainer(Chainer<String, String> parent) {
+	public TextChainer(Chainer<String, String> parent) {
 		super(parent);
 	}
 

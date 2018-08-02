@@ -6,6 +6,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
+
 /**
  * JSON work is can be chained.
  * 
@@ -16,7 +18,7 @@ import org.json.JSONObject;
  * @author 광수
  *
  */
-public class MultiJSONLink extends JSONAdapter {
+public class MultiJSONLink extends JSONAdapterBase {
 	private List<JSONAdapter> mJSONs = new LinkedList<>();
 
 	@Override
@@ -40,10 +42,16 @@ public class MultiJSONLink extends JSONAdapter {
 	public void receiveJSON(boolean result, JSONObject json) {
 		if (result) {
 			JSONArray array = json.getJSONArray(WorkConstants.MULTI_WORKING_RESULT_ARRAY);
-			System.out.println(array);
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject linkJSON = array.getJSONObject(i);
+				boolean linkBool = linkJSON.getBoolean(WorkConstants.WORKING_RESULT);
+				JSONAdapter adapter = mJSONs.remove(0);
+				adapter.receiveJSON(linkBool, linkJSON);
+				adapter.linkResult(linkBool);
+			}
 		}
 	}
-	
+
 	public void addChain(JSONAdapter link) {
 		mJSONs.add(link);
 	}

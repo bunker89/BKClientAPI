@@ -13,15 +13,16 @@ import org.json.JSONObject;
  * @author ys89
  *
  */
-public class WorkingParamLink extends JSONAdapter {
+public class ParamDecoLink extends DecoLink {
 	private JSONAdapter mOrigin;
 	private JSONObject mWorkingParam = new JSONObject();
 
-	public WorkingParamLink(JSONAdapter origin) {
+	public ParamDecoLink(JSONAdapter origin) {
+		super(origin);
 		mOrigin = origin;
 	}
-	
-	public WorkingParamLink addWorkingParam(String from, String srcKey, String destKey) {
+
+	public ParamDecoLink addWorkingParam(String from, String srcKey, String destKey) {
 		JSONArray array;
 		if (!mWorkingParam.has(from)) {
 			array = new JSONArray();
@@ -42,10 +43,5 @@ public class WorkingParamLink extends JSONAdapter {
 		if (mWorkingParam.length() > 0)
 			json.put(WorkConstants.WORKING_PARAM_JSON, mWorkingParam);
 		return json;
-	}
-
-	@Override
-	public void receiveJSON(boolean result, JSONObject json) {
-		mOrigin.receiveJSON(result, json);
 	}
 }

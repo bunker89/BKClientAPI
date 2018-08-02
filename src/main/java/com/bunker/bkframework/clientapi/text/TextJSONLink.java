@@ -2,8 +2,8 @@ package com.bunker.bkframework.clientapi.text;
 
 import org.json.JSONObject;
 
-import com.bunker.bkframework.clientapi.link.JSONAdapter;
 import com.bunker.bkframework.clientapi.link.JSONBridgeLink;
+import com.bunker.bkframework.clientapi.link.JSONAdapter;
 
 public class TextJSONLink extends JSONBridgeLink<String, String> {
 
