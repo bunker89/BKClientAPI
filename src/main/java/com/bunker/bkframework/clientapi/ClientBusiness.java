@@ -29,7 +29,9 @@ public abstract class ClientBusiness <PacketType, SendDataType, ReceiveDataType>
 
 	@Override
 	public void removeBusinessData(PeerConnection<SendDataType> connector) {
-		mHandle.broken();
+		if (mHandle != null)
+			mHandle.broken();
+		mHandle = null;
 	}
 
 	@Override

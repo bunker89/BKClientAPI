@@ -26,8 +26,12 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 	private boolean mEvented = false;
 	private boolean mAlived = true;
 	private Thread mKillThread;
+	private NetLink<SendDataType, ReceiveDataType> mCurrentLink = null;
 
 	private NetLink<SendDataType, ReceiveDataType> dummy = new NetLink<SendDataType, ReceiveDataType>() {
+		{
+			setOnResultListener(Chainer.this);
+		}
 
 		@Override
 		public void receive(PeerConnection<SendDataType> b, ReceiveDataType data, int seq) {
@@ -89,6 +93,7 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 	}
 
 	public void startNet(Network<SendDataType, ReceiveDataType> network) {
+		mAlived = true;
 		mNetwork = network;
 		if (mChains.isEmpty())
 			mChains.add(dummy);
@@ -102,7 +107,6 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 		synchronized (mChains) {
 			mEvented = true;
 			if (!mAlived) {
-				mAlived = true;
 				setLink();
 				reContainChain();
 				return;
@@ -170,18 +174,19 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 	}
 
 	private NetLink<SendDataType, ReceiveDataType> setLink() {
-		NetLink<SendDataType, ReceiveDataType> chain = mChains.remove(0);
-		chain.setOnResultListener(this);
-		chain.setMainChain();
-		mNetwork.changeHandle(chain);
-		return chain;
+		mCurrentLink = mChains.remove(0);
+		mCurrentLink.setOnResultListener(this);
+		mCurrentLink.setMainChain();
+		mNetwork.changeHandle(mCurrentLink);
+		return mCurrentLink;
 	}
 
 	private void setNextChain() {
 		synchronized (mChains) {
 
 			if (mChains.size() > 0) {
-				nextLink(setLink());
+				setLink();
+				nextLink(mCurrentLink);
 			} else if (mConnectionOriented) {
 				dummy.chainning(mNetwork.getPeerConnection(), mNetwork.getNextSequence());
 			} else {
@@ -203,5 +208,17 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 
 	public int getRemaingedLinkCount() {
 		return mChains.size();
+	}
+
+	@Override
+	public void broken() {
+		Logger.logging(_TAG, "network broked");
+		synchronized (mChains) {
+			if (mCurrentLink != null) {
+				mChains.add(0, mCurrentLink);
+				mCurrentLink = null;
+				mAlived = false;
+			}
+		}
 	}
 }

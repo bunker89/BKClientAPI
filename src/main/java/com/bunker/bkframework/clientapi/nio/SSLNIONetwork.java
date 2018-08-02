@@ -23,8 +23,8 @@ public class SSLNIONetwork extends NIONetwork implements HandShakeCallback {
 	private SecureFactory<ByteBuffer> mSecFac;
 	private PeerConnection<byte[]> mConnection;
 
-	public SSLNIONetwork(SecureFactory<ByteBuffer> secFac, NetHandle<byte[], byte[]> handle, String url, int port) {
-		super(handle, url, port);
+	public SSLNIONetwork(String name, SecureFactory<ByteBuffer> secFac, NetHandle<byte[], byte[]> handle, String url, int port) {
+		super(name, handle, url, port);
 		mSecFac = secFac;
 	}
 

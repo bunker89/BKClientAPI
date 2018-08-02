@@ -38,6 +38,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 	private HandShakeCallback mCallback;
 	private String mName = "Unknown";
 	private int mSize;
+	private Business<ByteBuffer, byte[], byte[]> mBusiness;
 
 	public PeerNIOClient(Business<ByteBuffer, byte[], byte[]> business, String inetAddr, int port) {
 		this(null, business, inetAddr, port);
@@ -47,7 +48,8 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 		super(new FixedSizeByteBufferPacketFactory(), secFactory, new ByteBufferBusinessConnector(business));
 		setLifeCycle(this);
 		mInetAddr = inetAddr;
-		mPort = port;
+		mPort = port;		
+		mBusiness = business;
 	}
 
 	public void setHandshakeCallback(HandShakeCallback callback) {
@@ -64,8 +66,10 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 
 	@Override
 	public void manageLife(PeerLife life) {
-		if (!startNetwork())
+		if (!startNetwork()) {
+			mBusiness.removeBusinessData(null);
 			return;
+		}
 		networkInited(this);
 		while (true) {
 			ByteBuffer b = getReadBuffer();
@@ -83,14 +87,17 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 				dispatch(b);
 			} catch (AsynchronousCloseException e) {
 				Logger.logging("PeerNIOClient", "peer async closed:" + mName);
+				mBusiness.removeBusinessData(null);
+				return;
 			} catch (IOException e) {
 				Logger.logging("PeerNIOClient", "connection closed:" + mName);
+				mBusiness.removeBusinessData(null);
 				return;
 			}
 			try {
 				life.life();
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger.err("PeerNIOClient", "doLifeException", e);
 			}
 			b.clear();
 		}
@@ -106,7 +113,7 @@ public class PeerNIOClient extends BusinessPeer<ByteBuffer, byte[], byte[]> impl
 				writer.setWriteBufferSize(mSize);
 			setWriter(writer);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.warning("PeerNIOClient", "connection error");
 			close();
 			return false;
 		}
