@@ -1,34 +1,42 @@
 package test;
 
-import java.nio.ByteBuffer;
+import org.junit.Test;
 
-import com.bunker.bkframework.business.Business;
 import com.bunker.bkframework.business.PeerConnection;
 import com.bunker.bkframework.clientapi.link.NetLink;
-import com.bunker.bkframework.clientapi.nio.PeerNIOClient;
-import com.bunker.bkframework.newframework.Peer;
+import com.bunker.bkframework.clientapi.link.bytes.BytesChainer;
+import com.bunker.bkframework.clientapi.nio.NIONetwork;
 
 public class ConnectServer {
-	public static void main(String []args) {
-		PeerNIOClient peer = new PeerNIOClient(new Business<ByteBuffer, byte[], byte[]>() {
-			
-			@Override
-			public void removeBusinessData(PeerConnection arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void receive(PeerConnection arg0, byte[] arg1, int arg2) {
-				System.out.println(new String(arg1));
-			}
-			
-			@Override
-			public void established(PeerConnection arg0) {
-				arg0.sendToPeer("1".getBytes(), 0);
-			}
-		}, "127.0.0.1", 9011);
-		peer.setWriterBufferSize(10);
-		new Thread(peer).start();
+	private int a = 0;
+	
+	class ReconectLink extends NetLink<byte[], byte[]> {
+
+		@Override
+		public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
+		}
+
+		@Override
+		public void chainning(PeerConnection<byte[]> b, int seq) {
+		}		
+	}
+	
+	@Test public void test() {
+		BytesChainer chainer = new BytesChainer(true);
+		NIONetwork network = new NIONetwork("test", null, "127.0.0.1", 1111);
+		chainer.startNet(network);
+
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		chainer.addChain(new ReconectLink());
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(network.mBKClientThreads.activeCount());
 	}
 }

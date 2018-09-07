@@ -6,6 +6,7 @@ import com.bunker.bkframework.clientapi.transaction.Transaction;
 public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandle<SendDataType, ReceiveDataType> {
 	interface OnResultListener {
 		public void result(boolean result);
+		public void broken();
 	}
 
 	public interface OnLinkResultListener {
@@ -17,7 +18,7 @@ public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandl
 	private OnLinkResultListener mLinkListener;
 	private boolean isHanding = false;
 
-	public void setOnResultListener(OnResultListener listener) {
+	void setOnResultListener(OnResultListener listener) {
 		mListener = listener;
 	}
 
@@ -42,6 +43,7 @@ public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandl
 	public void broken() {
 		if (mListener != null && isHanding) {
 			mListener.result(false);
+			mListener.broken();
 		}
 		isHanding = false;
 	}

@@ -1,8 +1,8 @@
 package com.bunker.bkframework.clientapi.link.bytes;
 
 import com.bunker.bkframework.clientapi.link.Chainer;
-import com.bunker.bkframework.clientapi.link.JSONAdapterChainer;
 import com.bunker.bkframework.clientapi.link.JSONAdapter;
+import com.bunker.bkframework.clientapi.link.JSONAdapterChainer;
 
 public class BytesChainer extends JSONAdapterChainer<byte[], byte[]> {
 	public BytesChainer() {
