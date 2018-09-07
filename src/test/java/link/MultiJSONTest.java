@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.bunker.bkframework.clientapi.TrueNetwork;
 import com.bunker.bkframework.clientapi.link.MultiJSONLink;
 import com.bunker.bkframework.clientapi.link.WorkConstants;
-import com.bunker.bkframework.clientapi.link.ParamDecoLink;
+import com.bunker.bkframework.clientapi.link.ServerParamLink;
 import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
 import com.bunker.bkframework.clientapi.link.bytes.BytesChainer;
 
@@ -17,7 +17,7 @@ public class MultiJSONTest implements OnLinkResultListener {
 		MultiJSONLink link = new MultiJSONLink();
 		link.addChain(new TestLink());
 		link.addChain(new TestLink(this, "ab"));
-		link.addChain(new ParamDecoLink(new TestLink(this, "abc")), "c");
+		link.addChain(new ServerParamLink(new TestLink(this, "abc")), "c");
 		System.out.println(link.getJson());
 		
 		TrueNetwork<byte[], byte[]> network = new TrueNetwork<>();

@@ -13,16 +13,16 @@ import org.json.JSONObject;
  * @author ys89
  *
  */
-public class ParamDecoLink extends DecoLink {
+public class ServerParamLink extends DecoLink {
 	private JSONAdapter mOrigin;
 	private JSONObject mWorkingParam = new JSONObject();
 
-	public ParamDecoLink(JSONAdapter origin) {
+	public ServerParamLink(JSONAdapter origin) {
 		super(origin);
 		mOrigin = origin;
 	}
 
-	public ParamDecoLink addWorkingParam(String from, String srcKey, String destKey) {
+	public ServerParamLink addWorkingParam(String from, String srcKey, String destKey) {
 		JSONArray array;
 		if (!mWorkingParam.has(from)) {
 			array = new JSONArray();

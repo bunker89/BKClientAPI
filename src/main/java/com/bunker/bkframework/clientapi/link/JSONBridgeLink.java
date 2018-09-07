@@ -39,8 +39,7 @@ public abstract class JSONBridgeLink<SendDataType, ReceiveDataType> extends NetL
 		try {
 			JSONObject json = parseJSON(data);
 			boolean result = json.getBoolean(WorkConstants.WORKING_RESULT);
-			if (result)
-				mAdapter.receiveJSON(result, json);
+			mAdapter.receiveJSON(result, json);
 			result(result);
 		} catch (JSONException e) {
 			e.printStackTrace();
