@@ -37,6 +37,11 @@ public class ConnectServer {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println(network.mBKClientThreads.activeCount());
+		chainer.addChain(new ReconectLink());
+		try {
+			Thread.sleep(50000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

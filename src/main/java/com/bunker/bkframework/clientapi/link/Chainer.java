@@ -106,7 +106,7 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 
 		synchronized (mChains) {
 			mEvented = true;
-			if (!mAlived) {
+			if (mConnectionOriented && !mAlived) {
 				setLink();
 				reContainChain();
 				return;

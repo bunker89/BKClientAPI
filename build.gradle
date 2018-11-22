@@ -24,6 +24,7 @@ dependencies {
     compile 'org.json:json:20171018'
     compile 'com.google.guava:guava:20.0'
     compile 'com.github.bunker89:BKFramwork:a5bdaa04a9'
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
 }

@@ -1,33 +1,15 @@
 package com.bunker.bkframework.clientapi.http;
 
-import com.bunker.bkframework.business.PeerConnection;
-import com.bunker.bkframework.clientapi.NetHandle;
-import com.bunker.bkframework.clientapi.Network;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 
-public class HttpNetwork implements Network<String, String> {
+import com.bunker.bkframework.clientapi.ClientBusiness;
+
+public class HttpNetwork extends ClientBusiness<String, HttpRequestBase, HttpResponse> {
+	public HttpNetwork(String addr) {
+	}
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
-		
 	}
-
-	@Override
-	public void changeHandle(NetHandle<String, String> handle) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNextSequence() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public PeerConnection<String> getPeerConnection() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -20,5 +20,4 @@ public class HttpConnection implements PeerConnection<String> {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

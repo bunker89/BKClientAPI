@@ -62,7 +62,6 @@ public class NIONetwork extends ClientBusiness<ByteBuffer, byte[], byte[]> {
 		return new PeerNIOClient(this,
 				mUrl,
 				mPort);
-		
 	}
 
 	public String getUrl() {
