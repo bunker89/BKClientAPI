@@ -1,6 +1,5 @@
 package com.bunker.bkframework.clientapi;
 
-
 import com.bunker.bkframework.business.PeerConnection;
 
 public interface NetHandle<SendDataType, ReceiveDataType> {
