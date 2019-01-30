@@ -13,12 +13,12 @@ public class TextJSONLink extends JSONBridgeLink<String, String> {
 
 	@Override
 	protected JSONObject parseJSON(String data) {
-		return null;
+		return new JSONObject(data);
 	}
 
 	@Override
 	protected String jsonToPeerData(JSONObject json) {
-		return null;
+		return json.toString();
 	}
 
 }
