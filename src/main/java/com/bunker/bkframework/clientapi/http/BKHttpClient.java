@@ -16,7 +16,6 @@ import org.apache.http.protocol.HttpContext;
 
 import com.bunker.bkframework.business.BusinessConnector;
 import com.bunker.bkframework.business.BusinessPeer;
-import com.bunker.bkframework.newframework.PacketFactory;
 
 public class BKHttpClient extends BusinessPeer<HttpPacket, HttpRequestBase, HttpResponse> implements HttpClient {
 	public BKHttpClient(BusinessConnector<HttpPacket, HttpRequestBase, HttpResponse> business) {
