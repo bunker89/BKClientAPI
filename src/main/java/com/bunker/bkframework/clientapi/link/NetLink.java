@@ -42,7 +42,6 @@ public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandl
 	@Override
 	public void broken() {
 		if (mListener != null && isHanding) {
-			mListener.result(false);
 			mListener.broken();
 		}
 		isHanding = false;

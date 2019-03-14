@@ -1,7 +1,6 @@
 package com.bunker.bkframework.clientapi.link;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
 
