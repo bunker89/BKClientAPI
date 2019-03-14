@@ -183,7 +183,6 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 
 	private void setNextChain() {
 		synchronized (mChains) {
-
 			if (mChains.size() > 0) {
 				setLink();
 				nextLink(mCurrentLink);

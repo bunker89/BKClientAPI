@@ -24,7 +24,10 @@ dependencies {
     compile 'org.json:json:20171018'
     compile 'com.google.guava:guava:20.0'
     compile 'com.github.bunker89:BKFramwork:a5bdaa04a9'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
+	implementation 'com.paypal.sdk:rest-api-sdk:+'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 }
