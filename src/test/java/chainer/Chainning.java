@@ -17,15 +17,14 @@ public class Chainning {
 		
 		@Override
 		public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
-			
+			result(true);
 		}
 		
 		@Override
 		public void chainning(PeerConnection<byte[]> b, int seq) {
-			System.out.println("test" + i + ":" + b.getEnviroment());
 			i++;
 			b.getEnviroment().put("test" + i, "tt");
-			result(true);
+			result(false);
 		}
 	};
 
@@ -34,13 +33,12 @@ public class Chainning {
 
 		@Override
 		public void receive(PeerConnection<byte[]> b, byte[] data, int seq) {
+			result(true);
 		}
 
 		@Override
 		public void chainning(PeerConnection<byte[]> b, int seq) {
-			System.out.println("sub" + i + ":" + b.getEnviroment());
 			i++;
-			result(true);
 			b.getEnviroment().put("sub" + i, "ss");
 		}
 	};
@@ -67,9 +65,13 @@ public class Chainning {
 		
 		chainer.addChain(mTestLink);
 		chainer.startNet(mNetwork);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
-	@Test
 	public void networkChange() {
 		System.out.println("------networkChange-----");
 		Chainer<byte[], byte[]> chainer = new Chainer<byte[], byte[]>();

@@ -159,10 +159,12 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 		return removeChain(chain);
 	}
 
-	//called from link
+	/**
+	 * if result is false than clear all the links.
+	 */
 	@Override
 	public void result(boolean result) {
-		if (result) 
+		if (result)
 			setNextChain();
 		
 		else {
@@ -170,13 +172,13 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 				for (NetLink<SendDataType, ReceiveDataType> chain : mChains) {
 					chain.result(false);
 				}
+				
 				mChains.clear();
-				mNetwork.changeHandle(null);
 				mNetwork.getPeerConnection().closePeer();
 			}
 		}
 	}
-
+	
 	private NetLink<SendDataType, ReceiveDataType> setLink() {
 		mCurrentLink = mChains.remove(0);
 		mCurrentLink.setOnResultListener(this);
@@ -213,7 +215,6 @@ public class Chainer<SendDataType, ReceiveDataType> implements Chainable<SendDat
 		return mChains.size();
 	}
 
-	//called from link
 	@Override
 	public void broken() {
 		Logger.logging(_TAG, "network broked");

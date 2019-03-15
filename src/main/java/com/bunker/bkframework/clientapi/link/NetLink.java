@@ -29,19 +29,22 @@ public abstract class NetLink<SendDataType, ReceiveDataType> implements NetHandl
 
 	protected void result(boolean result) {
 		linkResult(result, mLinkResultKey);
-		if (mListener != null && isHanding)
+		if (mListener != null && isHanding) {
+			isHanding = false;
 			mListener.result(result);
+		}
 		isHanding = false;
 	}
 
 	protected void linkResult(boolean result, String key) {
 		if (mLinkListener != null && isHanding)
-			mLinkListener.result(result, key, this);		
+			mLinkListener.result(result, key, this);
 	}
 
 	@Override
 	public void broken() {
 		if (mListener != null && isHanding) {
+			isHanding = false;
 			mListener.broken();
 		}
 		isHanding = false;
