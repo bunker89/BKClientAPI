@@ -6,8 +6,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.bunker.bkframework.clientapi.link.NetLink.OnLinkResultListener;
-
 /**
  * JSON work is can be chained.
  * 

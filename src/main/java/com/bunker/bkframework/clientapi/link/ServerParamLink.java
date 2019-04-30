@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class ServerParamLink extends DecoLink {
 	private JSONAdapter mOrigin;
 	private JSONObject mWorkingParam = new JSONObject();
-
+	
 	public ServerParamLink(JSONAdapter origin) {
 		super(origin);
 		mOrigin = origin;
@@ -36,7 +36,7 @@ public class ServerParamLink extends DecoLink {
 		array.put(json);
 		return this;
 	}
-
+	
 	@Override
 	public JSONObject getJson() {
 		JSONObject json = mOrigin.getJson();
