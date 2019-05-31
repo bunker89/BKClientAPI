@@ -16,14 +16,12 @@ repositories {
     jcenter()
     maven { url "https://jitpack.io" }
 }
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
 dependencies {
     // The production code uses Guava
     compile 'org.json:json:20171018'
     compile 'com.google.guava:guava:20.0'
-    compile 'com.github.bunker89:BKFramwork:a5bdaa04a9'
+    compile 'com.github.bunker89:BKFramwork:10dae7a8a9'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
     // Use JUnit test framework
