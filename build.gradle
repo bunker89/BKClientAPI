@@ -24,7 +24,5 @@ dependencies {
     implementation 'com.google.guava:guava:20.0'
     implementation 'com.github.bunker89:BKFramwork:dcd2e41573'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
-	implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
-    // Use JUnit test framework
     testCompile 'junit:junit:4.12'
 }
