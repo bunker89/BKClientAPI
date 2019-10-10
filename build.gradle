@@ -21,7 +21,6 @@ dependencies {
     // The production code uses Guava
 // https://mvnrepository.com/artifact/org.json/json
 	implementation group: 'org.json', name: 'json', version: '20180813'
-    implementation 'com.google.guava:guava:20.0'
     implementation 'com.github.bunker89:BKFramwork:dcd2e41573'
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     testCompile 'junit:junit:4.12'
