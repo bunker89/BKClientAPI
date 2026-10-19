@@ -19,16 +19,18 @@ public class HttpNetwork extends ClientBusiness<String, String, String> implemen
 
     private final Map<String, Object> environment = new HashMap<>();
 
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client;
 
-    private int timeout = 10;
-    
     public HttpNetwork(String url) {
-    	this.URL = url;
+        this(url, 10);
     }
 
-    public void setTimeout(int timeout) {
-    	this.timeout = timeout;
+    public HttpNetwork(String url, int timeout) {
+        this.URL = url;
+        client = new OkHttpClient.Builder()
+                .readTimeout(timeout, TimeUnit.SECONDS)
+                .writeTimeout(timeout, TimeUnit.SECONDS)
+                .build();
     }
 
     private String post(String json) throws IOException {
@@ -39,7 +41,6 @@ public class HttpNetwork extends ClientBusiness<String, String, String> implemen
                 .build();
 
         Call call = client.newCall(request);
-        call.timeout().timeout(timeout, TimeUnit.SECONDS);
 
         try (Response response = call.execute()) {
             return Objects.requireNonNull(response.body()).string();
