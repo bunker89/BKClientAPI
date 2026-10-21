@@ -68,7 +68,6 @@ public class HttpNetwork extends ClientBusiness<String, String, String> implemen
 
     @Override
     public void closePeer() {
-
     }
 
     @Override
